@@ -9,7 +9,7 @@ import ImageUploadWidget from '../ImageUploadWidget';
 
 const InputField = ({ label, children }) => (
   <div className="space-y-1.5">
-    <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest">{label}</label>
+    <label className="text-[10px] font-bold text-white/60 uppercase tracking-widest">{label}</label>
     {children}
   </div>
 );
@@ -102,7 +102,7 @@ const PackageForm = ({ onClose, onSuccess, initialData }) => {
         <div className="flex justify-between items-center mb-8 pb-4 border-b border-white/[0.06]">
           <div>
             <h2 className="text-xl font-black text-white">{initialData ? 'Update Package' : 'New Package'}</h2>
-            <p className="text-white/30 text-[10px] font-bold uppercase tracking-widest mt-1">Package Builder</p>
+            <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mt-1">Package Builder</p>
           </div>
           <button onClick={onClose} className="px-4 py-2 rounded-xl bg-red-400/10 text-red-400 text-sm font-bold hover:bg-red-400/20 transition-all">Close</button>
         </div>
@@ -146,7 +146,7 @@ const PackageForm = ({ onClose, onSuccess, initialData }) => {
               <InputField label="Country"><input required className={inputCls} value={formData.location.country} onChange={(e) => setFormData({ ...formData, location: { ...formData.location, country: e.target.value } })} /></InputField>
             </div>
             <div className="space-y-3">
-              <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Group Rates</label>
+              <label className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Group Rates</label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {formData.rates.map((rate, idx) => (
                   <div key={idx} className="flex gap-2 bg-white/[0.02] p-3 rounded-xl border border-white/[0.06]">
@@ -168,7 +168,7 @@ const PackageForm = ({ onClose, onSuccess, initialData }) => {
             </div>
             <ImageUploadWidget label="Hotel Image" value={formData.hotel.image} onChange={(val) => setFormData({ ...formData, hotel: { ...formData.hotel, image: val } })} placeholder="Upload hotel image..." />
             <div className="space-y-3">
-              <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Amenities</label>
+              <label className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Amenities</label>
               {formData.hotel.amenities.map((amenity, idx) => (
                 <div key={idx} className="flex gap-2">
                   <input className={`${inputCls} flex-1`} placeholder="e.g. Swimming Pool" value={amenity} onChange={(e) => handleArrayChange('hotel', idx, e.target.value, 'amenities')} />
@@ -226,9 +226,9 @@ const PackageForm = ({ onClose, onSuccess, initialData }) => {
                   <div className="grid grid-cols-3 gap-3">
                     {['breakfast', 'lunch', 'dinner'].map((m) => (
                       <div key={m} className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-white/30 uppercase">{m}</label>
+                        <label className="text-[10px] font-bold text-white/60 uppercase">{m}</label>
                         <input className="w-full bg-background border border-white/[0.06] p-2 rounded-lg text-xs text-white outline-none" value={day.food?.[m]?.name || ''} onChange={(e) => handleItineraryChange(dIdx, `food.${m}.name`, e.target.value)} />
-                        <label className="flex items-center gap-2 text-[10px] text-white/40 cursor-pointer">
+                        <label className="flex items-center gap-2 text-[10px] text-white/70 cursor-pointer">
                           <input type="checkbox" checked={day.food?.[m]?.included || false} onChange={(e) => handleItineraryChange(dIdx, `food.${m}.included`, e.target.checked)} className="accent-primary" />
                           Included
                         </label>
@@ -237,7 +237,7 @@ const PackageForm = ({ onClose, onSuccess, initialData }) => {
                   </div>
                 </div>
               ))}
-              <button type="button" onClick={addDay} className="w-full py-5 rounded-2xl border-2 border-dashed border-white/[0.06] text-white/30 text-sm font-bold hover:border-primary/30 hover:text-primary transition-all flex items-center justify-center gap-2">
+              <button type="button" onClick={addDay} className="w-full py-5 rounded-2xl border-2 border-dashed border-white/[0.06] text-white/60 text-sm font-bold hover:border-primary/30 hover:text-primary transition-all flex items-center justify-center gap-2">
                 <Plus size={18} /> Add Day
               </button>
             </div>

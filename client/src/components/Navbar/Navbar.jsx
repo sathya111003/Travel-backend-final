@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, User, LogOut, LayoutDashboard, ChevronDown, Star, Phone, Mail } from 'lucide-react';
+import { Menu, X, ChevronDown, Star, Phone, Mail } from 'lucide-react';
 import { fetchDestinations, fetchAllPackagesAdmin } from '../../api/api';
 import logo from '../../assets/logo.PNG';
 import { useAuth } from '../../context/AuthContext';
@@ -15,14 +15,13 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [userDropdown, setUserDropdown] = useState(false);
   const [destinations, setDestinations] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeMenu, setActiveMenu] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { userInfo, logout, openAuthModal } = useAuth();
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -42,12 +41,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-    setUserDropdown(false);
-  };
-
   const isActive = (path) => location.pathname === path;
 
   const MegaMenu = ({ type }) => {
@@ -60,9 +53,7 @@ const Navbar = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
-        className={`fixed left-0 right-0 top-full bg-background/95 backdrop-blur-2xl border-t border-white/5 shadow-2xl z-40 mx-auto max-w-5xl rounded-b-3xl overflow-hidden`}
-        onMouseEnter={() => setActiveMenu(type)}
-        onMouseLeave={() => setActiveMenu(null)}
+        className={`absolute right-1/2 translate-x-1/2 mt-4 w-[90vw] max-w-5xl bg-background/95 backdrop-blur-2xl border border-white/5 shadow-2xl z-40 rounded-3xl overflow-hidden`}
       >
         <div className="p-10 max-h-[55vh] overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -97,9 +88,7 @@ const Navbar = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
-      className={`fixed left-0 right-0 top-full bg-background/95 backdrop-blur-2xl border-t border-white/5 shadow-2xl z-40 mx-auto max-w-sm rounded-b-3xl overflow-hidden`}
-      onMouseEnter={() => setActiveMenu('packages')}
-      onMouseLeave={() => setActiveMenu(null)}
+      className={`absolute left-0 mt-4 w-64 bg-background/95 backdrop-blur-2xl border border-white/5 shadow-2xl z-40 rounded-3xl overflow-hidden`}
     >
       <div className="p-8">
         <h4 className="text-sm font-bold text-primary uppercase tracking-widest mb-4">Browse Categories</h4>
@@ -187,6 +176,10 @@ const Navbar = () => {
                     <span>{label}</span>
                     <ChevronDown size={10} className={`transition-transform duration-200 ${activeMenu === key ? 'rotate-180' : ''}`} />
                   </button>
+                  <AnimatePresence>
+                    {activeMenu === key && key === 'packages' && <CategoryMenu />}
+                    {activeMenu === key && (key === 'domestic' || key === 'international') && <MegaMenu type={key} />}
+                  </AnimatePresence>
                 </div>
               ))}
             </div>
@@ -203,41 +196,12 @@ const Navbar = () => {
                 <span>Enquire</span>
               </a>
 
-              {userInfo ? (
-                <div className="relative">
-                  <button onClick={() => setUserDropdown(!userDropdown)} className="flex items-center space-x-2 bg-white/[0.04] px-4 py-2.5 rounded-xl border border-white/[0.06] hover:border-primary/30 transition-all">
-                    <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="w-3 h-3 text-primary" />
-                    </div>
-                    <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest hidden sm:block">{userInfo.name.split(' ')[0]}</span>
-                  </button>
-                  <AnimatePresence>
-                    {userDropdown && (
-                      <motion.div initial={{ opacity: 0, y: 8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.96 }} transition={{ duration: 0.15 }} className="absolute right-0 mt-3 w-52 bg-background/95 backdrop-blur-2xl border border-white/[0.06] rounded-2xl overflow-hidden shadow-2xl py-2 z-50">
-                        <Link to="/dashboard" onClick={() => setUserDropdown(false)} className="flex items-center space-x-3 px-5 py-2.5 hover:bg-white/[0.04] text-white/70 text-xs font-medium transition-colors">
-                          <User size={14} className="text-primary/60" /> <span>My Account</span>
-                        </Link>
-                        {userInfo.role === 'admin' && (
-                          <Link to="/admin/dashboard" onClick={() => setUserDropdown(false)} className="flex items-center space-x-3 px-5 py-2.5 hover:bg-white/[0.04] text-white/70 text-xs font-medium transition-colors">
-                            <LayoutDashboard size={14} className="text-primary/60" /> <span>Admin Panel</span>
-                          </Link>
-                        )}
-                        <button onClick={handleLogout} className="w-full flex items-center space-x-3 px-5 py-2.5 hover:bg-red-400/5 text-red-400/80 text-xs font-medium border-t border-white/[0.04] mt-1 transition-colors">
-                          <LogOut size={14} /> <span>Sign Out</span>
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <button
-                  onClick={() => openAuthModal('login')}
-                  className="hidden md:flex items-center space-x-2 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-white/80 px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all"
-                >
-                  <User size={12} />
-                  <span>Login</span>
-                </button>
-              )}
+              <Link
+                to="/packages"
+                className="hidden md:flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-lg shadow-primary/20"
+              >
+                <span>Book Now</span>
+              </Link>
 
               <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white/80 hover:text-primary transition-colors p-1">
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -246,13 +210,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* Mega Menus */}
-      <AnimatePresence>
-        {activeMenu === 'domestic' && <MegaMenu type="domestic" />}
-        {activeMenu === 'international' && <MegaMenu type="international" />}
-        {activeMenu === 'packages' && <CategoryMenu />}
-      </AnimatePresence>
 
       {/* Mobile Overlay */}
       <AnimatePresence>
@@ -302,16 +259,13 @@ const Navbar = () => {
               </a>
             </div>
             <div className="mt-auto pt-10">
-              {userInfo ? (
-                <div className="space-y-3">
-                  <Link to="/dashboard" onClick={() => setIsOpen(false)} className="block w-full text-center py-4 bg-white/[0.04] rounded-xl font-bold text-white/80 text-sm border border-white/[0.06]">My Account</Link>
-                  <button onClick={() => { handleLogout(); setIsOpen(false); }} className="block w-full text-center py-4 text-red-400/80 font-bold text-sm">Sign Out</button>
-                </div>
-              ) : (
-                <button onClick={() => { setIsOpen(false); openAuthModal('login'); }} className="w-full bg-primary text-background py-4 rounded-xl font-black uppercase tracking-widest text-sm shadow-lg shadow-primary/20">
-                  Login / Register
-                </button>
-              )}
+              <Link
+                to="/packages"
+                onClick={() => setIsOpen(false)}
+                className="block w-full text-center py-4 bg-primary text-white rounded-xl font-black uppercase tracking-widest text-sm shadow-lg shadow-primary/20"
+              >
+                Book Now
+              </Link>
             </div>
           </motion.div>
         )}

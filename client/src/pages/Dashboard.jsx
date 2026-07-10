@@ -33,10 +33,10 @@ const Dashboard = () => {
             </div>
             <div>
               <h1 className="text-xl font-black text-white">{user?.name}</h1>
-              <p className="text-white/30 text-sm">{user?.email}</p>
+              <p className="text-white/60 text-sm">{user?.email}</p>
             </div>
           </div>
-          <button onClick={handleLogout} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.04] text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium border border-white/[0.06]">
+          <button onClick={handleLogout} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.04] text-white/70 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium border border-white/[0.06]">
             <LogOut size={16} /> Logout
           </button>
         </div>
@@ -44,11 +44,11 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="space-y-4">
             <div className="bg-card p-5 rounded-2xl border border-l-4 border-l-primary border-white/[0.06]">
-              <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Total Bookings</p>
+              <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Total Bookings</p>
               <p className="text-3xl font-black text-white">{bookings.length}</p>
             </div>
             <div className="bg-card p-5 rounded-2xl border border-l-4 border-l-accent border-white/[0.06]">
-              <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Upcoming Trips</p>
+              <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Upcoming Trips</p>
               <p className="text-3xl font-black text-white">{bookings.filter(b => new Date(b.travelDate) > new Date()).length}</p>
             </div>
           </div>
@@ -57,8 +57,8 @@ const Dashboard = () => {
             <h2 className="text-lg font-black text-white">My Bookings</h2>
             {bookings.length === 0 ? (
               <div className="bg-card p-12 rounded-2xl text-center border border-white/[0.06]">
-                <Package className="w-10 h-10 text-white/10 mx-auto mb-3" />
-                <p className="text-white/30 text-sm">No bookings yet. Start your first adventure!</p>
+                <Package className="w-10 h-10 text-white/30 mx-auto mb-3" />
+                <p className="text-white/60 text-sm">No bookings yet. Start your first adventure!</p>
               </div>
             ) : (
               bookings.map((b) => (
@@ -70,7 +70,7 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <h4 className="font-bold text-sm text-white">{b.package?.title}</h4>
-                        <div className="flex items-center gap-3 text-xs text-white/30 mt-1">
+                        <div className="flex items-center gap-3 text-xs text-white/60 mt-1">
                           <span className="flex items-center gap-1"><Calendar size={10} /> {new Date(b.travelDate).toLocaleDateString()}</span>
                           <span className="flex items-center gap-1"><Clock size={10} /> {b.package?.duration}</span>
                         </div>

@@ -11,7 +11,7 @@ import logo from '../assets/logo.PNG';
 const StatCard = ({ label, value }) => (
   <div className="glass-card p-6 rounded-2xl text-center">
     <h4 className="text-3xl font-black gradient-text mb-1">{value}</h4>
-    <p className="text-xs font-bold text-white/40 uppercase tracking-widest">{label}</p>
+    <p className="text-xs font-bold text-white/70 uppercase tracking-widest">{label}</p>
   </div>
 );
 
@@ -137,7 +137,7 @@ const About = () => {
         >
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Why Choose Us</h2>
-            <p className="text-white/40 text-sm">We ensure the best quality service for your perfect trip.</p>
+            <p className="text-white/70 text-sm">We ensure the best quality service for your perfect trip.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <FeatureCard icon={ShieldCheck} title="Trusted Travel Partner" />

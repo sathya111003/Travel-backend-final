@@ -32,7 +32,7 @@ const BookingManagement = () => {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-black text-white">Booking Management</h1>
-        <p className="text-white/40 text-sm mt-1">Monitor and manage all customer bookings.</p>
+        <p className="text-white/70 text-sm mt-1">Monitor and manage all customer bookings.</p>
       </div>
 
       {loading ? (
@@ -45,11 +45,11 @@ const BookingManagement = () => {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Customer</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Package</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Travel Date</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Status</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest text-right">Amount</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Customer</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Package</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Travel Date</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Status</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest text-right">Amount</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.04]">
@@ -60,12 +60,12 @@ const BookingManagement = () => {
                         <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary"><User size={16} /></div>
                         <div>
                           <div className="text-sm font-bold text-white">{b.user?.name || 'Unknown'}</div>
-                          <div className="text-[10px] text-white/30">{b.user?.email || ''}</div>
+                          <div className="text-[10px] text-white/60">{b.user?.email || ''}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-white/70">{b.package?.title || 'Removed'}</td>
-                    <td className="px-6 py-4 text-sm text-white/50">{new Date(b.travelDate).toLocaleDateString()}</td>
+                    <td className="px-6 py-4 text-sm text-white/80">{new Date(b.travelDate).toLocaleDateString()}</td>
                     <td className="px-6 py-4">
                       <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${getStatusStyle(b.status)}`}>{b.status}</span>
                     </td>
@@ -75,7 +75,7 @@ const BookingManagement = () => {
               </tbody>
             </table>
           </div>
-          {bookings.length === 0 && <div className="p-16 text-center text-white/20 text-sm">No bookings found</div>}
+          {bookings.length === 0 && <div className="p-16 text-center text-white/50 text-sm">No bookings found</div>}
         </div>
       )}
     </div>

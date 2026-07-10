@@ -8,12 +8,14 @@ const RecentTourDetails = () => {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeImage, setActiveImage] = useState('');
 
   useEffect(() => {
     const getTourDetails = async () => {
       try {
         const { data } = await fetchRecentTourById(id);
         setTour(data);
+        setActiveImage(data.image || '');
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -54,13 +56,13 @@ const RecentTourDetails = () => {
           className="glass rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl"
         >
           {/* Main Image */}
-          <div className="relative h-[40vh] md:h-[60vh] w-full">
+          <div className="relative h-[40vh] md:h-[60vh] w-full bg-black/20">
             <img 
-              src={tour.image} 
+              src={activeImage || tour.image} 
               alt={tour.title} 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-all duration-300"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent"></div>
             <div className="absolute bottom-10 left-10 right-10">
               <div className="flex items-center space-x-3 mb-4">
                 <span className="bg-primary/20 backdrop-blur-md text-primary px-4 py-2 rounded-full font-bold text-sm flex items-center space-x-2 border border-primary/20">
@@ -77,6 +79,23 @@ const RecentTourDetails = () => {
             </div>
           </div>
 
+          {/* Gallery Thumbnails */}
+          {tour.images && tour.images.length > 1 && (
+            <div className="flex gap-3 px-10 pt-6 overflow-x-auto scrollbar-thin scrollbar-thumb-white/10">
+              {tour.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(img)}
+                  className={`w-20 h-20 rounded-2xl overflow-hidden border-2 shrink-0 transition-all ${
+                    activeImage === img ? 'border-primary scale-105 shadow-lg shadow-primary/20' : 'border-white/5 hover:border-white/25'
+                  }`}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Content & Media */}
           <div className="p-10 space-y-12">
             <div className="prose prose-invert max-w-none">
@@ -87,43 +106,59 @@ const RecentTourDetails = () => {
             </div>
 
             {/* Media Section */}
-            {(tour.videoUrl || tour.audioUrl) && (
+            {((tour.videoUrl || (tour.videoUrls && tour.videoUrls.length > 0)) || tour.audioUrl) && (
               <div className="border-t border-white/10 pt-12 space-y-8">
                 <h3 className="text-2xl font-bold text-white flex items-center space-x-3">
                   <span>Tour Media</span>
                 </h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Video Player */}
-                  {tour.videoUrl && (
-                    <div className="space-y-4">
+                  {/* Video Player(s) */}
+                  {((tour.videoUrls && tour.videoUrls.length > 0) || tour.videoUrl) && (
+                    <div className="space-y-4 md:col-span-2">
                       <div className="flex items-center space-x-2 text-primary">
                         <VideoIcon size={20} />
-                        <h4 className="font-bold">Tour Video</h4>
+                        <h4 className="font-bold">Tour Videos</h4>
                       </div>
-                      <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black aspect-video relative">
-                        {tour.videoUrl.includes('youtube') || tour.videoUrl.includes('vimeo') ? (
-                          <iframe 
-                            src={tour.videoUrl} 
-                            className="w-full h-full"
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen
-                          ></iframe>
-                        ) : (
-                          <video 
-                            src={tour.videoUrl} 
-                            controls 
-                            className="w-full h-full object-contain"
-                          ></video>
-                        )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {(tour.videoUrls && tour.videoUrls.length > 0 ? tour.videoUrls : [tour.videoUrl]).map((videoUrl, vIdx) => {
+                          if (!videoUrl) return null;
+                          return (
+                            <div key={vIdx} className="space-y-2">
+                              <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black aspect-video relative">
+                                {videoUrl.includes('youtube') || videoUrl.includes('vimeo') ? (
+                                  <iframe 
+                                    src={videoUrl} 
+                                    className="w-full h-full"
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                  ></iframe>
+                                ) : (
+                                  <video 
+                                    controls 
+                                    playsInline
+                                    preload="metadata"
+                                    className="w-full h-full object-contain relative z-10 pointer-events-auto cursor-pointer"
+                                  >
+                                    <source src={videoUrl} />
+                                    Your browser does not support the video tag.
+                                  </video>
+                                )}
+                              </div>
+                              {tour.videoUrls && tour.videoUrls.length > 1 && (
+                                <p className="text-xs text-white/40 text-center">Video {vIdx + 1}</p>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
 
                   {/* Audio Player */}
                   {tour.audioUrl && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 md:col-span-2">
                       <div className="flex items-center space-x-2 text-[#F97316]">
                         <Music size={20} />
                         <h4 className="font-bold">Client Audio Review</h4>

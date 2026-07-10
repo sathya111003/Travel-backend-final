@@ -30,7 +30,7 @@ const WhyChooseUs = () => {
             <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Why Us</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Why Choose Us?</h2>
-          <p className="text-white/40 text-sm max-w-md mx-auto">We make your travel planning stress-free and exciting.</p>
+          <p className="text-white/70 text-sm max-w-md mx-auto">We make your travel planning stress-free and exciting.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -47,7 +47,7 @@ const WhyChooseUs = () => {
                 <item.icon className="w-6 h-6 text-primary" />
               </div>
               <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
-              <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+              <p className="text-white/70 text-sm leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>

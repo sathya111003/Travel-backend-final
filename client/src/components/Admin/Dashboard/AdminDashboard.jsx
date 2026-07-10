@@ -6,7 +6,7 @@ const StatCard = ({ title, value, icon, color }) => (
   <div className="bg-card p-6 rounded-2xl border border-white/[0.06] relative overflow-hidden">
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-white/40 font-bold uppercase text-[10px] tracking-widest mb-2">{title}</p>
+        <p className="text-white/70 font-bold uppercase text-[10px] tracking-widest mb-2">{title}</p>
         <h3 className="text-2xl font-black text-white">{value}</h3>
       </div>
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${color}`}>
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-white">Welcome Back, Admin</h1>
-          <p className="text-white/40 text-sm mt-1">Here's what's happening with your travel platform today.</p>
+          <p className="text-white/70 text-sm mt-1">Here's what's happening with your travel platform today.</p>
         </div>
         <p className="text-xs font-bold text-primary">
           {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
@@ -66,10 +66,10 @@ const AdminDashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-card p-8 rounded-2xl h-64 flex items-center justify-center border border-white/[0.06]">
-          <p className="text-white/20 text-sm">Revenue Chart</p>
+          <p className="text-white/50 text-sm">Revenue Chart</p>
         </div>
         <div className="bg-card p-8 rounded-2xl h-64 flex items-center justify-center border border-white/[0.06]">
-          <p className="text-white/20 text-sm">Booking Trends</p>
+          <p className="text-white/50 text-sm">Booking Trends</p>
         </div>
       </div>
     </div>

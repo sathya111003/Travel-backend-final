@@ -57,13 +57,21 @@ const Preloader = () => (
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="text-white/40 text-xs font-bold tracking-[0.3em] uppercase mt-6"
+        className="text-white/70 text-xs font-bold tracking-[0.3em] uppercase mt-6"
       >
         Preparing your journey
       </motion.p>
     </motion.div>
   </motion.div>
 );
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, [pathname]);
+  return null;
+};
 
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
@@ -94,6 +102,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <AnimatePresence>
         {loading && <Preloader key="preloader" />}
       </AnimatePresence>

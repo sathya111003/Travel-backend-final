@@ -8,7 +8,7 @@ import Testimonials from '../components/Testimonials/Testimonials';
 import { fetchPackages, createReview } from '../api/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { X, Star, Send, Heart, Compass, Users, Globe, Map, Calendar, ChevronRight, Sparkles } from 'lucide-react';
+import { X, Star, Send, Heart, Compass, Users, Globe, Map, Calendar, ChevronRight, Sparkles, Shield, Clock } from 'lucide-react';
 
 const CategoryCard = ({ title, icon: Icon, path, count, image }) => (
   <Link to={path} className="group relative overflow-hidden rounded-3xl h-60">
@@ -20,7 +20,7 @@ const CategoryCard = ({ title, icon: Icon, path, count, image }) => (
           <Icon size={20} />
         </div>
         <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{title}</h3>
-        <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest mt-1">{count} Packages</p>
+        <p className="text-white/70 text-[10px] font-bold uppercase tracking-widest mt-1">{count} Packages</p>
       </div>
       <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary opacity-0 group-hover:opacity-100 transition-all transform translate-x-3 group-hover:translate-x-0">
         <ChevronRight size={16} />
@@ -90,7 +90,7 @@ const Home = () => {
             </label>
             <input
               placeholder="Search destination..."
-              className="bg-transparent text-lg font-bold outline-none w-full placeholder:text-white/20"
+              className="bg-transparent text-lg font-bold outline-none w-full placeholder:text-white/50"
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -114,12 +114,34 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Trust Cards */}
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row justify-center gap-4">
+          {[
+            { icon: Shield, text: '100% Safe & Secure', sub: 'Verified Partners' },
+            { icon: Clock, text: '24/7 Support', sub: 'Always Available' },
+            { icon: Star, text: '4.8 Rated', sub: '10k+ Happy Clients' },
+          ].map(({ icon: Icon, text, sub }, i) => (
+            <div
+              key={i}
+              className="bg-white/[0.04] backdrop-blur-md px-6 py-4 rounded-xl border border-white/[0.05] flex items-center space-x-3 flex-1 justify-center"
+            >
+              <Icon size={18} className="text-primary shrink-0" />
+              <div>
+                <p className="text-xs font-bold text-white">{text}</p>
+                <p className="text-[10px] text-white/70">{sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Latest Packages */}
       <section className="py-24 max-w-7xl mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
           <div className="space-y-2 text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">Discover Your <span className="gradient-text">Next Adventure</span></h2>
-            <p className="text-white/40 text-sm">Recently added packages based on your favorite locations.</p>
+            <p className="text-white/70 text-sm">Recently added packages based on your favorite locations.</p>
           </div>
           <button onClick={() => navigate('/packages?sort=latest')} className="bg-white/[0.04] hover:bg-white/[0.08] px-6 py-3 rounded-xl text-sm font-bold transition-all border border-white/[0.06] text-white/60">
             View All
@@ -143,7 +165,7 @@ const Home = () => {
             {[...Array(5)].map((_, i) => <Star key={i} fill="currentColor" size={18} />)}
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">Top Rated Experiences</h2>
-          <p className="text-white/40 text-sm">Your feedback helps us curate better journeys.</p>
+          <p className="text-white/70 text-sm">Your feedback helps us curate better journeys.</p>
           <button onClick={() => setShowReviewModal(true)} className="bg-primary text-white px-8 py-4 rounded-xl font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all">
             Add Your Review
           </button>
@@ -162,7 +184,7 @@ const Home = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div className="space-y-2">
               <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">Travel <span className="gradient-text">Categories</span></h2>
-              <p className="text-white/40 text-sm max-w-md">Tailored experiences for every kind of traveler.</p>
+              <p className="text-white/70 text-sm max-w-md">Tailored experiences for every kind of traveler.</p>
             </div>
             <Link to="/packages" className="mt-4 md:mt-0 flex items-center gap-1.5 text-primary font-bold text-sm group">
               View All <ChevronRight className="transition-transform group-hover:translate-x-1" size={16} />
@@ -180,7 +202,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 space-y-2">
             <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premium <span className="gradient-text">Experiences</span></h2>
-            <p className="text-white/40 text-sm max-w-lg mx-auto">Hand-picked packages offering the best of luxury and exploration.</p>
+            <p className="text-white/70 text-sm max-w-lg mx-auto">Hand-picked packages offering the best of luxury and exploration.</p>
           </div>
           {loading ? (
             <div className="flex justify-center py-20">
@@ -212,7 +234,7 @@ const Home = () => {
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowReviewModal(false)} className="absolute inset-0 bg-background/90 backdrop-blur-sm" />
             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} transition={{ duration: 0.2 }} className="relative bg-card border border-white/[0.06] p-8 md:p-10 rounded-3xl w-full max-w-lg shadow-2xl">
-              <button onClick={() => setShowReviewModal(false)} className="absolute top-5 right-5 text-white/30 hover:text-white transition-colors"><X size={24} /></button>
+              <button onClick={() => setShowReviewModal(false)} className="absolute top-5 right-5 text-white/60 hover:text-white transition-colors"><X size={24} /></button>
               <div className="flex items-center gap-2 mb-6">
                 <Sparkles size={16} className="text-primary" />
                 <h3 className="text-xl font-bold text-white">Share Your Journey</h3>
@@ -220,7 +242,7 @@ const Home = () => {
 
               <form onSubmit={submitReview} className="space-y-5">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Select Package</label>
+                  <label className="text-[10px] font-bold text-white/70 uppercase tracking-widest">Select Package</label>
                   <select required className="w-full bg-background border border-white/[0.06] p-3 rounded-xl outline-none focus:border-primary/50 transition-colors text-sm text-white" onChange={(e) => setReviewData({ ...reviewData, packageId: e.target.value })}>
                     <option value="">Choose a package you visited...</option>
                     {packages.map(p => <option key={p._id} value={p._id}>{p.title}</option>)}
@@ -228,7 +250,7 @@ const Home = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Rating</label>
+                  <label className="text-[10px] font-bold text-white/70 uppercase tracking-widest">Rating</label>
                   <div className="flex gap-2">
                     {[1, 2, 3, 4, 5].map((num) => (
                       <button key={num} type="button" onClick={() => setReviewData({ ...reviewData, rating: num })} className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all ${reviewData.rating >= num ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-background border-white/[0.06] hover:border-primary/30'}`}>
@@ -239,7 +261,7 @@ const Home = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Review Comment</label>
+                  <label className="text-[10px] font-bold text-white/70 uppercase tracking-widest">Review Comment</label>
                   <textarea placeholder="Tell us about your experience..." className="w-full bg-background border border-white/[0.06] p-3 rounded-xl outline-none focus:border-primary/50 transition-colors h-28 resize-none text-sm text-white" value={reviewData.comment} onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })} required />
                 </div>
 

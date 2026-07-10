@@ -30,7 +30,7 @@ const UserManagement = () => {
       <AlertTriangle size={32} className="text-red-400" />
       <div>
         <h3 className="text-lg font-bold text-red-400 mb-1">Error</h3>
-        <p className="text-white/40 text-sm">{error}</p>
+        <p className="text-white/70 text-sm">{error}</p>
       </div>
       <button onClick={() => { localStorage.removeItem('userInfo'); navigate('/admin/login'); }} className="px-6 py-2.5 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400 text-sm font-bold hover:bg-red-400/20 transition-all">Re-Login</button>
     </div>
@@ -40,7 +40,7 @@ const UserManagement = () => {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-black text-white">User Management</h1>
-        <p className="text-white/40 text-sm mt-1">All registered users on the platform.</p>
+        <p className="text-white/70 text-sm mt-1">All registered users on the platform.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -55,10 +55,10 @@ const UserManagement = () => {
               )}
             </div>
             <h4 className="font-bold text-sm text-white mb-0.5">{u.name}</h4>
-            <p className="text-white/30 text-xs flex items-center gap-1.5 mb-4"><Mail size={10} /> {u.email}</p>
+            <p className="text-white/60 text-xs flex items-center gap-1.5 mb-4"><Mail size={10} /> {u.email}</p>
             <div className="pt-3 border-t border-white/[0.04] space-y-2">
-              <div className="flex items-center text-xs text-white/40"><Phone size={12} className="mr-2 text-primary/60" /> {u.phone || 'No phone'}</div>
-              <div className="flex items-center text-xs text-white/40"><Calendar size={12} className="mr-2 text-primary/60" /> {new Date(u.createdAt).toLocaleDateString()}</div>
+              <div className="flex items-center text-xs text-white/70"><Phone size={12} className="mr-2 text-primary/60" /> {u.phone || 'No phone'}</div>
+              <div className="flex items-center text-xs text-white/70"><Calendar size={12} className="mr-2 text-primary/60" /> {new Date(u.createdAt).toLocaleDateString()}</div>
             </div>
           </div>
         ))}

@@ -45,7 +45,7 @@ const PackageManagement = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-white">Package Management</h1>
-          <p className="text-white/40 text-sm mt-1">Add, update, or remove travel packages.</p>
+          <p className="text-white/70 text-sm mt-1">Add, update, or remove travel packages.</p>
         </div>
         <button onClick={() => { setEditingPackage(null); setShowForm(true); }} className="bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all">
           <Plus size={18} /> Add Package
@@ -53,10 +53,10 @@ const PackageManagement = () => {
       </div>
 
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" size={18} />
         <input 
           type="text" placeholder="Search by title or location..."
-          className="w-full bg-card pl-11 pr-4 py-3 rounded-xl border border-white/[0.06] focus:border-primary/40 transition-all text-sm text-white placeholder:text-white/20 outline-none"
+          className="w-full bg-card pl-11 pr-4 py-3 rounded-xl border border-white/[0.06] focus:border-primary/40 transition-all text-sm text-white placeholder:text-white/50 outline-none"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -72,11 +72,11 @@ const PackageManagement = () => {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Image</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Details</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Category</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Price</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest text-right">Actions</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Image</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Details</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Category</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest">Price</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/60 uppercase tracking-widest text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.04]">
@@ -89,7 +89,7 @@ const PackageManagement = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="font-bold text-white text-sm">{pkg.title}</div>
-                      <div className="text-xs text-white/30 flex items-center mt-0.5">
+                      <div className="text-xs text-white/60 flex items-center mt-0.5">
                         <MapPin size={10} className="mr-1" /> {pkg.location?.city} &bull; {pkg.duration}
                       </div>
                     </td>
@@ -99,10 +99,10 @@ const PackageManagement = () => {
                     <td className="px-6 py-4 font-bold text-primary text-sm">₹{pkg.price?.toLocaleString()}</td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => { setEditingPackage(pkg); setShowForm(true); }} className="p-2 rounded-lg bg-white/[0.04] text-white/40 hover:text-primary hover:bg-primary/10 transition-all">
+                        <button onClick={() => { setEditingPackage(pkg); setShowForm(true); }} className="p-2 rounded-lg bg-white/[0.04] text-white/70 hover:text-primary hover:bg-primary/10 transition-all">
                           <Edit size={16} />
                         </button>
-                        <button onClick={() => handleDelete(pkg._id)} className="p-2 rounded-lg bg-white/[0.04] text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all">
+                        <button onClick={() => handleDelete(pkg._id)} className="p-2 rounded-lg bg-white/[0.04] text-white/70 hover:text-red-400 hover:bg-red-400/10 transition-all">
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -113,7 +113,7 @@ const PackageManagement = () => {
             </table>
           </div>
           {filteredPackages.length === 0 && (
-            <div className="p-16 text-center text-white/20 text-sm">No packages found</div>
+            <div className="p-16 text-center text-white/50 text-sm">No packages found</div>
           )}
         </div>
       )}

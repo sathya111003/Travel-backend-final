@@ -17,8 +17,12 @@ const getRecentTours = async (req, res) => {
 // @access  Private/Admin
 const addRecentTour = async (req, res) => {
     try {
-        const { title, image, days, description, videoUrl, audioUrl } = req.body;
-        const tour = new RecentTour({ title, image, days, description, videoUrl, audioUrl });
+        const { title, image, images, days, description, videoUrl, videoUrls, audioUrl, packageId } = req.body;
+        const tourData = { title, image, images, days, description, videoUrl, videoUrls, audioUrl };
+        if (packageId && packageId.trim() !== '') {
+            tourData.packageId = packageId;
+        }
+        const tour = new RecentTour(tourData);
         const createdTour = await tour.save();
         res.status(201).json(createdTour);
     } catch (error) {
@@ -59,4 +63,32 @@ const getRecentTourById = async (req, res) => {
     }
 };
 
-module.exports = { getRecentTours, getRecentTourById, addRecentTour, deleteRecentTour };
+// @desc    Update a recent tour
+// @route   PUT /api/recentTours/:id
+// @access  Private/Admin
+const updateRecentTour = async (req, res) => {
+    try {
+        const { title, image, images, days, description, videoUrl, videoUrls, audioUrl, packageId } = req.body;
+        const tour = await RecentTour.findById(req.params.id);
+        if (tour) {
+            tour.title = title || tour.title;
+            tour.image = image !== undefined ? image : tour.image;
+            tour.images = images !== undefined ? images : tour.images;
+            tour.days = days || tour.days;
+            tour.description = description || tour.description;
+            tour.videoUrl = videoUrl !== undefined ? videoUrl : tour.videoUrl;
+            tour.videoUrls = videoUrls !== undefined ? videoUrls : tour.videoUrls;
+            tour.audioUrl = audioUrl !== undefined ? audioUrl : tour.audioUrl;
+            tour.packageId = (packageId !== undefined && packageId !== '') ? packageId : null;
+
+            const updatedTour = await tour.save();
+            res.json(updatedTour);
+        } else {
+            res.status(404).json({ message: 'Recent tour not found' });
+        }
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+module.exports = { getRecentTours, getRecentTourById, addRecentTour, deleteRecentTour, updateRecentTour };

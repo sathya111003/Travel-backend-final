@@ -78,7 +78,7 @@ const ContactPage = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-14">
           <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">Get In Touch</h1>
-          <p className="text-white/40 max-w-lg mx-auto">Have questions? We're here to help you plan your perfect trip.</p>
+          <p className="text-white/70 max-w-lg mx-auto">Have questions? We're here to help you plan your perfect trip.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -99,9 +99,9 @@ const ContactPage = () => {
                   <div>
                     <h4 className="font-bold text-white text-sm">{label}</h4>
                     {href ? (
-                      <a href={href} className="text-white/40 text-sm hover:text-primary transition-colors">{value}</a>
+                      <a href={href} className="text-white/70 text-sm hover:text-primary transition-colors">{value}</a>
                     ) : (
-                      <p className="text-white/40 text-sm">{value}</p>
+                      <p className="text-white/70 text-sm">{value}</p>
                     )}
                   </div>
                 </div>
@@ -129,7 +129,7 @@ const ContactPage = () => {
             <form className="space-y-5" onSubmit={handleEnquirySubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider">Your Name *</label>
+                  <label className="text-xs font-bold text-white/70 uppercase tracking-wider">Your Name *</label>
                   <input
                     type="text"
                     value={formData.name}
@@ -140,7 +140,7 @@ const ContactPage = () => {
                   {errors.name && <p className="text-red-400 text-xs">{errors.name}</p>}
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider">Email Address *</label>
+                  <label className="text-xs font-bold text-white/70 uppercase tracking-wider">Email Address *</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -154,7 +154,7 @@ const ContactPage = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider">Phone *</label>
+                  <label className="text-xs font-bold text-white/70 uppercase tracking-wider">Phone *</label>
                   <input
                     type="text"
                     value={formData.phone}
@@ -165,7 +165,7 @@ const ContactPage = () => {
                   {errors.phone && <p className="text-red-400 text-xs">{errors.phone}</p>}
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider">Subject</label>
+                  <label className="text-xs font-bold text-white/70 uppercase tracking-wider">Subject</label>
                   <input
                     type="text"
                     value={formData.subject}
@@ -177,7 +177,7 @@ const ContactPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-white/40 uppercase tracking-wider">Message *</label>
+                <label className="text-xs font-bold text-white/70 uppercase tracking-wider">Message *</label>
                 <textarea
                   value={formData.message}
                   onChange={(e) => handleChange('message', e.target.value)}

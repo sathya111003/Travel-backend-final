@@ -37,7 +37,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
               <span className="text-xs font-bold tracking-widest uppercase text-white/60">Admin</span>
             </div>
           </div>
-          <button onClick={onClose} className="lg:hidden p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/40">
+          <button onClick={onClose} className="lg:hidden p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/70">
             <X size={18} />
           </button>
         </div>

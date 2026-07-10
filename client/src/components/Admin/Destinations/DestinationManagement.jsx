@@ -40,7 +40,7 @@ const DestinationManagement = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-white">Mega Menu</h1>
-          <p className="text-white/40 text-sm mt-1">Manage regions & cities in the navbar menus.</p>
+          <p className="text-white/70 text-sm mt-1">Manage regions & cities in the navbar menus.</p>
         </div>
         <button onClick={() => { setShowForm(true); setEditingId(null); setFormData({ region: '', type: 'domestic', cities: [''] }); }} className="bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all">
           <Plus size={18} /> Add Region
@@ -53,11 +53,11 @@ const DestinationManagement = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Region Name</label>
+                  <label className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Region Name</label>
                   <input required className={inputCls} value={formData.region} onChange={(e) => setFormData({...formData, region: e.target.value})} placeholder="e.g. Kerala" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Menu Category</label>
+                  <label className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Menu Category</label>
                   <select className={`${inputCls} appearance-none cursor-pointer`} value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
                     <option value="domestic">Domestic</option>
                     <option value="international">International</option>
@@ -65,7 +65,7 @@ const DestinationManagement = () => {
                 </div>
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Cities</label>
+                <label className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Cities</label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {formData.cities.map((city, idx) => (
                     <div key={idx} className="flex gap-2">
@@ -91,14 +91,14 @@ const DestinationManagement = () => {
             <div className="flex justify-between items-start mb-3">
               <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${d.type === 'domestic' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary'}`}>{d.type}</span>
               <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 hover:!opacity-100 transition-opacity" onMouseEnter={(e) => e.currentTarget.parentElement.classList.add('opacity-100')} onMouseLeave={(e) => e.currentTarget.parentElement.classList.remove('opacity-100')}>
-                <button onClick={() => handleEdit(d)} className="p-1.5 rounded-lg bg-white/[0.04] text-white/30 hover:text-primary hover:bg-primary/10 transition-all"><Edit size={14} /></button>
-                <button onClick={() => handleDelete(d._id)} className="p-1.5 rounded-lg bg-white/[0.04] text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-all"><Trash2 size={14} /></button>
+                <button onClick={() => handleEdit(d)} className="p-1.5 rounded-lg bg-white/[0.04] text-white/60 hover:text-primary hover:bg-primary/10 transition-all"><Edit size={14} /></button>
+                <button onClick={() => handleDelete(d._id)} className="p-1.5 rounded-lg bg-white/[0.04] text-white/60 hover:text-red-400 hover:bg-red-400/10 transition-all"><Trash2 size={14} /></button>
               </div>
             </div>
             <h3 className="font-bold text-lg text-white mb-3">{d.region}</h3>
             <div className="flex flex-wrap gap-1.5">
               {d.cities.map((c, i) => (
-                <span key={i} className="bg-white/[0.04] px-2.5 py-1 rounded-lg text-[10px] text-white/40 border border-white/[0.04]">{typeof c === 'object' ? c.name : c}</span>
+                <span key={i} className="bg-white/[0.04] px-2.5 py-1 rounded-lg text-[10px] text-white/70 border border-white/[0.04]">{typeof c === 'object' ? c.name : c}</span>
               ))}
             </div>
           </div>

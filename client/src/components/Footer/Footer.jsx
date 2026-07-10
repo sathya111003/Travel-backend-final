@@ -33,7 +33,7 @@ const Footer = () => {
           <JourneyBackground />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl -mt-48" />
           <h2 className="text-3xl md:text-4xl font-black text-white mb-3 relative z-10">Ready to Start Your Journey?</h2>
-          <p className="text-white/40 mb-8 max-w-lg mx-auto relative z-10">Let us plan your perfect trip. Get exclusive deals and personalized itineraries.</p>
+          <p className="text-white/70 mb-8 max-w-lg mx-auto relative z-10">Let us plan your perfect trip. Get exclusive deals and personalized itineraries.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
             <a href="https://wa.me/919361571902?text=Hi%20Ravana%20Holidays!%20I'm%20interested%20in%20booking%20a%20trip." target="_blank" rel="noopener noreferrer" className="bg-primary text-white px-8 py-3.5 rounded-xl font-bold text-sm flex items-center space-x-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]">
               <MessageCircle size={16} />
@@ -59,13 +59,13 @@ const Footer = () => {
               Premium travel experiences tailored to your dreams. From snowy mountains to tropical beaches, we plan it all.
             </p>
             <div className="flex gap-2">
-              <a href="https://www.instagram.com/_ravana_holidays_official_?igsh=ZjU3Z3JuZjF6ZDJ3&utm_source=qr" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-primary/10 hover:text-primary text-white/40 transition-all border border-white/[0.04]">
+              <a href="https://www.instagram.com/_ravana_holidays_official_?igsh=ZjU3Z3JuZjF6ZDJ3&utm_source=qr" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-primary/10 hover:text-primary text-white/70 transition-all border border-white/[0.04]">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
               </a>
-              <a href="https://wa.me/919361571902" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-green-500/10 hover:text-green-400 text-white/40 transition-all border border-white/[0.04]">
+              <a href="https://wa.me/919361571902" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-green-500/10 hover:text-green-400 text-white/70 transition-all border border-white/[0.04]">
                 <MessageCircle size={16} />
               </a>
-              <a href="mailto:ravanaholidaysofficial@gmail.com" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-primary/10 hover:text-primary text-white/40 transition-all border border-white/[0.04]">
+              <a href="mailto:ravanaholidaysofficial@gmail.com" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-primary/10 hover:text-primary text-white/70 transition-all border border-white/[0.04]">
                 <Mail size={16} />
               </a>
             </div>
@@ -73,7 +73,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-bold text-white/30 uppercase tracking-widest mb-5">Quick Links</h4>
+            <h4 className="text-xs font-bold text-white/60 uppercase tracking-widest mb-5">Quick Links</h4>
             <ul className="space-y-3">
               {[
                 { label: 'Home', path: '/' },
@@ -83,7 +83,7 @@ const Footer = () => {
                 { label: 'My Bookings', path: '/dashboard' },
               ].map(({ label, path }) => (
                 <li key={path}>
-                  <Link to={path} className="text-sm text-white/40 hover:text-primary transition-colors flex items-center gap-1 group">
+                  <Link to={path} className="text-sm text-white/70 hover:text-primary transition-colors flex items-center gap-1 group">
                     {label}
                     <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Link>
@@ -94,8 +94,8 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="text-xs font-bold text-white/30 uppercase tracking-widest mb-5">Contact Us</h4>
-            <ul className="space-y-4 text-sm text-white/40">
+            <h4 className="text-xs font-bold text-white/60 uppercase tracking-widest mb-5">Contact Us</h4>
+            <ul className="space-y-4 text-sm text-white/70">
               <li className="flex items-start gap-3">
                 <MapPin size={14} className="text-primary/60 shrink-0 mt-0.5" />
                 <span>Adventure City, India</span>
@@ -113,8 +113,8 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-xs font-bold text-white/30 uppercase tracking-widest mb-5">Newsletter</h4>
-            <p className="text-sm text-white/40 mb-4">Subscribe for latest deals and travel tips.</p>
+            <h4 className="text-xs font-bold text-white/60 uppercase tracking-widest mb-5">Newsletter</h4>
+            <p className="text-sm text-white/70 mb-4">Subscribe for latest deals and travel tips.</p>
             <form onSubmit={handleNewsletterSubmit} className="space-y-3">
               <input
                 type="email"
@@ -122,7 +122,7 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary/50 text-white placeholder:text-white/20 transition-colors"
+                className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary/50 text-white placeholder:text-white/50 transition-colors"
               />
               <button
                 type="submit"

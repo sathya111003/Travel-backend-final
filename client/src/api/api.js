@@ -40,6 +40,7 @@ export const createReview = (reviewData) => API.post('/reviews', reviewData);
 export const fetchRecentTours = () => API.get('/recentTours');
 export const fetchRecentTourById = (id) => API.get(`/recentTours/${id}`);
 export const createRecentTour = (tourData) => API.post('/recentTours', tourData);
+export const updateRecentTour = (id, tourData) => API.put(`/recentTours/${id}`, tourData);
 export const deleteRecentTour = (id) => API.delete(`/recentTours/${id}`);
 
 // Destinations (Mega Menu) API
@@ -52,14 +53,8 @@ export const deleteDestination = (id) => API.delete(`/destinations/${id}`);
 export const subscribeNewsletter = (email) => API.post('/newsletter', { email });
 
 // Upload API
-export const uploadImage = (formData) => API.post('/upload/image', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-});
-export const uploadVideo = (formData) => API.post('/upload/video', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-});
-export const uploadAudio = (formData) => API.post('/upload/audio', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-});
+export const uploadImage = (formData) => API.post('/upload/image', formData);
+export const uploadVideo = (formData) => API.post('/upload/video', formData);
+export const uploadAudio = (formData) => API.post('/upload/audio', formData);
 
 export default API;

@@ -58,7 +58,7 @@ const Loader = ({ variant = 'section', text }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="text-white/40 text-[10px] font-bold tracking-[0.3em] uppercase mt-6"
+              className="text-white/70 text-[10px] font-bold tracking-[0.3em] uppercase mt-6"
             >
               {text}
             </motion.p>

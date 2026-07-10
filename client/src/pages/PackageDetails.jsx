@@ -279,61 +279,68 @@ const PackageDetails = () => {
               </div>
             </section>
 
-            {/* Accommodation Details */}
+            {/* Your Stay - Day Wise */}
             <section className="space-y-10">
                <div className="space-y-2">
                   <h3 className="text-3xl font-bold flex items-center space-x-3">
                     <Hotel className="text-primary" size={28} />
                     <span>Your Stay</span>
                   </h3>
-                  <p className="text-text/50 text-sm font-bold uppercase tracking-widest ml-10">Luxury Handpicked for you</p>
-                </div>
-                
-                {pkg.hotel && (
-                  <div className="glass p-10 rounded-[4rem] border border-primary/5 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div className="rounded-[3rem] overflow-hidden h-80 relative shadow-2xl">
-                       <img src={pkg.hotel.image} alt={pkg.hotel.name} className="w-full h-full object-cover" />
-                       <div className="absolute top-6 left-6 bg-background/60 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center space-x-1 border border-white/10 shadow-xl">
-                          <Star size={14} className="text-primary fill-primary" />
-                          <span className="text-sm font-bold">{pkg.hotel.rating}.0 Luxury</span>
+                  <p className="text-text/50 text-sm font-bold uppercase tracking-widest ml-10">Day wise accommodation</p>
+               </div>
+               
+               <div className="space-y-6">
+                 {pkg.itinerary?.map((day, i) => (
+                   <div key={i} className="bg-card p-8 rounded-3xl border border-white/10 hover:border-primary/30 transition-all">
+                     <div className="flex items-center gap-4 mb-4">
+                       <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center shrink-0">
+                         <span className="text-primary font-black text-lg">D{day.day}</span>
                        </div>
-                    </div>
-                    <div className="space-y-6">
                        <div>
-                         <h4 className="text-3xl font-bold mb-2">{pkg.hotel.name}</h4>
-                         <p className="text-text/60 leading-relaxed italic">"{pkg.hotel.description}"</p>
+                         <h4 className="font-bold text-lg text-white">{day.title}</h4>
+                         <p className="text-xs text-white/50 font-bold uppercase tracking-widest">{day.travel}</p>
                        </div>
-                       <div className="flex flex-wrap gap-2">
-                         {pkg.hotel.amenities?.map((am, idx) => (
-                           <span key={idx} className="bg-primary/5 px-4 py-2 rounded-xl text-[10px] font-bold text-primary uppercase border border-primary/10">{am}</span>
+                     </div>
+                     {day.places && day.places.length > 0 && (
+                       <div className="flex flex-wrap gap-2 ml-16">
+                         {day.places.map((place, idx) => (
+                           <span key={idx} className="bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-bold text-primary border border-primary/20">{place}</span>
                          ))}
                        </div>
-                    </div>
-                  </div>
-                )}
+                     )}
+                   </div>
+                 ))}
+               </div>
             </section>
 
-            {/* Location & Map Section */}
+            {/* Location Map - Day Wise */}
             <section className="space-y-10">
                <div className="space-y-2">
                   <h3 className="text-3xl font-bold flex items-center space-x-3">
                     <MapIcon className="text-primary" size={28} />
                     <span>Location Map</span>
                   </h3>
-                  <p className="text-text/50 text-sm font-bold uppercase tracking-widest ml-10">Navigate your journey</p>
-                </div>
-                <div className="h-96 w-full rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl grayscale hover:grayscale-0 transition-all duration-700">
-                  <iframe
-                    title="Package Location"
-                    width="100%"
-                    height="100%"
-                    frameBorder="0"
-                    scrolling="no"
-                    marginHeight="0"
-                    marginWidth="0"
-                    src={`https://maps.google.com/maps?q=${pkg.location?.lat},${pkg.location?.lng}&z=15&output=embed`}
-                  ></iframe>
-                </div>
+                  <p className="text-text/50 text-sm font-bold uppercase tracking-widest ml-10">Day wise locations</p>
+               </div>
+               
+               <div className="space-y-4">
+                 {pkg.itinerary?.map((day, i) => (
+                   <div key={i} className="bg-card p-6 rounded-2xl border border-white/10 hover:border-primary/30 transition-all flex items-center gap-5">
+                     <div className="w-14 h-14 bg-primary/20 rounded-2xl flex items-center justify-center shrink-0">
+                       <MapPin size={22} className="text-primary" />
+                     </div>
+                     <div className="flex-1">
+                       <div className="flex items-center gap-3 mb-1">
+                         <span className="bg-primary text-white px-3 py-1 rounded-lg text-xs font-black">Day {day.day}</span>
+                         <h4 className="font-bold text-white">{day.title}</h4>
+                       </div>
+                       {day.places && day.places.length > 0 && (
+                         <p className="text-sm text-white/60">{day.places.join(' → ')}</p>
+                       )}
+                     </div>
+                   </div>
+                 ))}
+               </div>
             </section>
 
             {/* Reviews Section */}

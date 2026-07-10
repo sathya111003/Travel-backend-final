@@ -69,7 +69,7 @@ const Testimonials = () => {
               <div key={i} className="space-y-6 outline-none px-4">
                 <div className="flex justify-center space-x-1 text-primary">
                   {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} size={16} className={idx < rev.rating ? 'fill-primary' : 'text-white/10'} />
+                    <Star key={idx} size={16} className={idx < rev.rating ? 'fill-primary' : 'text-white/50'} />
                   ))}
                 </div>
 
@@ -79,7 +79,7 @@ const Testimonials = () => {
 
                 <div className="pt-2">
                   <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{rev.name}</h4>
-                  <p className="text-[10px] text-white/30 mt-0.5">Verified Traveler</p>
+                  <p className="text-[10px] text-white/60 mt-0.5">Verified Traveler</p>
                 </div>
               </div>
             ))}
