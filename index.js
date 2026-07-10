@@ -37,7 +37,16 @@ app.use('/api/newsletter', require('./routes/newsletterRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
 // Serve uploads static files
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve React build
+const clientDistPath = path.join(__dirname, 'client', 'dist');
+app.use(express.static(clientDistPath));
+
+// SPA catch-all — serve index.html for all non-API routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 
