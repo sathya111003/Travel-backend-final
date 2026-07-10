@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Edit, Trash2, Search, Filter, MapPin } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { Plus, Edit, Trash2, Search, MapPin } from 'lucide-react';
 import { fetchAllPackagesAdmin, deletePackage } from '../../../api/api';
 import PackageForm from './PackageForm';
 
@@ -22,9 +22,7 @@ const PackageManagement = () => {
     }
   };
 
-  useEffect(() => {
-    getPackages();
-  }, []);
+  useEffect(() => { getPackages(); }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this package?')) {
@@ -37,16 +35,6 @@ const PackageManagement = () => {
     }
   };
 
-  const handleEdit = (pkg) => {
-    setEditingPackage(pkg);
-    setShowForm(true);
-  };
-
-  const handleAdd = () => {
-    setEditingPackage(null);
-    setShowForm(true);
-  };
-
   const filteredPackages = packages.filter(p => 
     p.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
     p.location?.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -54,90 +42,78 @@ const PackageManagement = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold">Package Management</h1>
-          <p className="text-text/60 mt-1">Add, update, or remove travel packages from the platform.</p>
+          <h1 className="text-3xl font-black text-white">Package Management</h1>
+          <p className="text-white/40 text-sm mt-1">Add, update, or remove travel packages.</p>
         </div>
-        <button 
-          onClick={handleAdd}
-          className="bg-primary text-background px-8 py-4 rounded-2xl font-bold flex items-center space-x-2 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
-        >
-          <Plus size={20} />
-          <span>Add New Package</span>
+        <button onClick={() => { setEditingPackage(null); setShowForm(true); }} className="bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all">
+          <Plus size={18} /> Add Package
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text/30" size={20} />
-          <input 
-            type="text" placeholder="Search packages by title or location..."
-            className="w-full glass pl-12 pr-4 py-4 rounded-2xl border-primary/10 focus:border-primary transition-all"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <button className="glass px-6 py-4 rounded-2xl flex items-center space-x-2 text-text/60 hover:text-primary transition-all">
-          <Filter size={20} />
-          <span>Filters</span>
-        </button>
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
+        <input 
+          type="text" placeholder="Search by title or location..."
+          className="w-full bg-card pl-11 pr-4 py-3 rounded-xl border border-white/[0.06] focus:border-primary/40 transition-all text-sm text-white placeholder:text-white/20 outline-none"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
+          <div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
         </div>
       ) : (
-        <div className="glass rounded-[2rem] overflow-hidden border border-primary/10">
-          <table className="w-full text-left">
-            <thead className="bg-primary/5 text-text/50 uppercase text-xs font-bold tracking-wider">
-              <tr>
-                <th className="px-8 py-6">Image</th>
-                <th className="px-8 py-6">Package Details</th>
-                <th className="px-8 py-6">Category</th>
-                <th className="px-8 py-6">Price</th>
-                <th className="px-8 py-6 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-primary/5">
-              {filteredPackages.map((pkg) => (
-                <tr key={pkg._id} className="hover:bg-white/5 transition-colors group">
-                  <td className="px-8 py-6">
-                    <div className="w-20 h-14 rounded-lg overflow-hidden border border-primary/10">
-                      <img src={pkg.images[0]} alt="" className="w-full h-full object-cover" />
-                    </div>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="font-bold text-text group-hover:text-primary transition-colors">{pkg.title}</div>
-                    <div className="text-sm text-text/50 flex items-center mt-1">
-                      <MapPin size={12} className="mr-1" /> {pkg.location?.city} • {pkg.duration}
-                    </div>
-                  </td>
-                  <td className="px-8 py-6 uppercase text-xs font-bold text-text/70">{pkg.category}</td>
-                  <td className="px-8 py-6 font-bold text-primary">₹{pkg.price.toLocaleString()}</td>
-                  <td className="px-8 py-6 text-right">
-                    <div className="flex justify-end space-x-3">
-                      <button 
-                        onClick={() => handleEdit(pkg)}
-                        className="p-2 glass text-text/60 hover:text-primary hover:border-primary/40 transition-all rounded-lg"
-                      >
-                        <Edit size={18} />
-                      </button>
-                      <button 
-                        onClick={() => handleDelete(pkg._id)}
-                        className="p-2 glass text-text/60 hover:text-red-400 hover:border-red-400/40 transition-all rounded-lg"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
+        <div className="bg-card rounded-2xl border border-white/[0.06] overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-white/[0.06]">
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Image</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Details</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Category</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest">Price</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-white/30 uppercase tracking-widest text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-white/[0.04]">
+                {filteredPackages.map((pkg) => (
+                  <tr key={pkg._id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="w-16 h-12 rounded-lg overflow-hidden border border-white/[0.06]">
+                        <img src={pkg.images?.[0]} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-bold text-white text-sm">{pkg.title}</div>
+                      <div className="text-xs text-white/30 flex items-center mt-0.5">
+                        <MapPin size={10} className="mr-1" /> {pkg.location?.city} &bull; {pkg.duration}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-white/[0.04] text-white/50 border border-white/[0.06]">{pkg.category}</span>
+                    </td>
+                    <td className="px-6 py-4 font-bold text-primary text-sm">₹{pkg.price?.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-2">
+                        <button onClick={() => { setEditingPackage(pkg); setShowForm(true); }} className="p-2 rounded-lg bg-white/[0.04] text-white/40 hover:text-primary hover:bg-primary/10 transition-all">
+                          <Edit size={16} />
+                        </button>
+                        <button onClick={() => handleDelete(pkg._id)} className="p-2 rounded-lg bg-white/[0.04] text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {filteredPackages.length === 0 && (
-            <div className="p-20 text-center text-text/30 italic">No packages found</div>
+            <div className="p-16 text-center text-white/20 text-sm">No packages found</div>
           )}
         </div>
       )}

@@ -1,18 +1,11 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
-  Package, 
-  CalendarCheck, 
-  Users, 
-  MessageSquare, 
-  LogOut,
-  Compass,
-  Menu,
-  ShieldCheck
+  LayoutDashboard, Package, CalendarCheck, Users, MessageSquare,
+  LogOut, Compass, Menu, ShieldCheck, X
 } from 'lucide-react';
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -32,42 +25,55 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div className="w-64 glass h-screen fixed left-0 top-0 border-r border-primary/10 flex flex-col">
-      <div className="p-6 border-b border-primary/10 flex flex-col items-center space-y-4">
-        <img src="/src/assets/logo.PNG" alt="Ravana Holidays" className="h-20 w-auto object-contain" />
-        <div className="flex items-center space-x-2">
-          <ShieldCheck className="text-primary w-5 h-5" />
-          <span className="text-lg font-bold tracking-tighter uppercase">Admin Console</span>
+    <>
+      {isOpen && <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden" onClick={onClose} />}
+
+      <aside className={`fixed left-0 top-0 h-full w-64 bg-card border-r border-white/[0.06] flex flex-col z-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+        <div className="p-6 border-b border-white/[0.06] flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <img src="/src/assets/logo.PNG" alt="Ravana Holidays" className="h-10 w-auto object-contain" />
+            <div className="flex items-center space-x-1.5">
+              <ShieldCheck className="text-primary w-4 h-4" />
+              <span className="text-xs font-bold tracking-widest uppercase text-white/60">Admin</span>
+            </div>
+          </div>
+          <button onClick={onClose} className="lg:hidden p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/40">
+            <X size={18} />
+          </button>
         </div>
-      </div>
 
-      <div className="flex-1 py-8 px-4 space-y-2">
-        {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            to={item.path}
-            className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
-              location.pathname === item.path 
-                ? 'bg-primary text-background font-bold shadow-lg shadow-primary/20' 
-                : 'text-text/70 hover:bg-primary/10 hover:text-primary'
-            }`}
+        <nav className="flex-1 py-6 px-3 space-y-1">
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                onClick={onClose}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                  isActive 
+                    ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                    : 'text-white/50 hover:bg-white/[0.04] hover:text-white/80'
+                }`}
+              >
+                {item.icon}
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-4 border-t border-white/[0.06]">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl text-red-400/80 hover:bg-red-400/10 hover:text-red-400 transition-all text-sm font-medium"
           >
-            {item.icon}
-            <span>{item.name}</span>
-          </Link>
-        ))}
-      </div>
-
-      <div className="p-6 border-t border-primary/10">
-        <button 
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all border border-red-400/20"
-        >
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
-      </div>
-    </div>
+            <LogOut size={18} />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Send, Mail, Phone, MapPin, MessageCircle, Instagram, ArrowUpRight } from 'lucide-react';
+import { Send, Mail, Phone, MapPin, MessageCircle, ArrowUpRight } from 'lucide-react';
 import logo from '../../assets/logo.PNG';
 import { subscribeNewsletter } from '../../api/api';
+import JourneyBackground from './JourneyBackground';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -29,6 +30,7 @@ const Footer = () => {
       {/* CTA Section */}
       <div className="max-w-7xl mx-auto px-4 pt-20 pb-12">
         <div className="glass-card p-10 md:p-14 rounded-3xl text-center mb-16 relative overflow-hidden">
+          <JourneyBackground />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl -mt-48" />
           <h2 className="text-3xl md:text-4xl font-black text-white mb-3 relative z-10">Ready to Start Your Journey?</h2>
           <p className="text-white/40 mb-8 max-w-lg mx-auto relative z-10">Let us plan your perfect trip. Get exclusive deals and personalized itineraries.</p>
@@ -58,7 +60,7 @@ const Footer = () => {
             </p>
             <div className="flex gap-2">
               <a href="https://www.instagram.com/_ravana_holidays_official_?igsh=ZjU3Z3JuZjF6ZDJ3&utm_source=qr" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-primary/10 hover:text-primary text-white/40 transition-all border border-white/[0.04]">
-                <Instagram size={16} />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
               </a>
               <a href="https://wa.me/919361571902" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/[0.04] rounded-lg flex items-center justify-center hover:bg-green-500/10 hover:text-green-400 text-white/40 transition-all border border-white/[0.04]">
                 <MessageCircle size={16} />

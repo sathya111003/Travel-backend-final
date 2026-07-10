@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Mail, Phone, Calendar, User } from 'lucide-react';
+import { Mail, Phone, User } from 'lucide-react';
 import { fetchAllEnquiries } from '../../../api/api';
 
 const EnquiryManagement = () => {
@@ -23,54 +23,40 @@ const EnquiryManagement = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold">Enquiries</h1>
-        <p className="text-text/60 mt-1">Review and respond to messages from potential travelers.</p>
+        <h1 className="text-3xl font-black text-white">Enquiries</h1>
+        <p className="text-white/40 text-sm mt-1">Messages from potential travelers.</p>
       </div>
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
+          <div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
         </div>
       ) : (
-        <div className="space-y-6">
-          {enquiries.map((enquiry) => (
-            <div key={enquiry._id} className="glass p-8 rounded-3xl border border-primary/10 hover:bg-white/5 transition-all">
+        <div className="space-y-4">
+          {enquiries.map((e) => (
+            <div key={e._id} className="bg-card p-6 rounded-2xl border border-white/[0.06]">
               <div className="flex flex-col md:flex-row justify-between gap-6">
-                <div className="space-y-6 flex-1">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                      <User size={24} />
-                    </div>
+                <div className="flex-1 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary"><User size={18} /></div>
                     <div>
-                      <h4 className="font-bold text-lg">{enquiry.name}</h4>
-                      <p className="text-xs text-text/50">Submitted on {new Date(enquiry.createdAt).toLocaleString()}</p>
+                      <h4 className="font-bold text-sm text-white">{e.name}</h4>
+                      <p className="text-[10px] text-white/30">{new Date(e.createdAt).toLocaleString()}</p>
                     </div>
                   </div>
-                  
-                  <div className="bg-background/50 p-6 rounded-2xl border border-primary/5">
-                    <p className="text-text/80 leading-relaxed italic">"{enquiry.message}"</p>
+                  <div className="bg-background/50 p-4 rounded-xl border border-white/[0.04]">
+                    <p className="text-white/60 text-sm leading-relaxed">{e.message}</p>
                   </div>
                 </div>
-
-                <div className="md:w-64 space-y-3 pt-6 md:pt-0 md:border-l border-primary/10 md:pl-8">
-                  <h5 className="text-xs font-bold uppercase text-text/30 tracking-widest mb-4">Contact Info</h5>
-                  <div className="flex items-center text-sm text-text/70">
-                    <Mail size={14} className="mr-3 text-primary" />
-                    <span>{enquiry.email}</span>
-                  </div>
-                  <div className="flex items-center text-sm text-text/70">
-                    <Phone size={14} className="mr-3 text-primary" />
-                    <span>{enquiry.phone || 'Not provided'}</span>
-                  </div>
+                <div className="md:w-56 space-y-2.5 md:border-l border-white/[0.06] md:pl-6">
+                  <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest mb-3">Contact</p>
+                  <div className="flex items-center text-xs text-white/50"><Mail size={12} className="mr-2 text-primary/60" /> {e.email}</div>
+                  <div className="flex items-center text-xs text-white/50"><Phone size={12} className="mr-2 text-primary/60" /> {e.phone || 'Not provided'}</div>
                 </div>
               </div>
             </div>
           ))}
-          {enquiries.length === 0 && (
-            <div className="glass p-20 text-center text-text/30 italic rounded-3xl border border-primary/10">
-              No enquiries found
-            </div>
-          )}
+          {enquiries.length === 0 && <div className="bg-card p-16 rounded-2xl text-center text-white/20 text-sm">No enquiries yet</div>}
         </div>
       )}
     </div>

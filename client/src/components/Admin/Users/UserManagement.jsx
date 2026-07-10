@@ -16,80 +16,53 @@ const UserManagement = () => {
         setUsers(data);
         setLoading(false);
       } catch (err) {
-        if (err.response?.status === 401) {
-          setError('Session expired or invalid. Please log out and log back in as admin.');
-        } else {
-          setError('Failed to load users. Please try again.');
-        }
+        setError(err.response?.status === 401 ? 'Session expired. Please re-login.' : 'Failed to load users.');
         setLoading(false);
       }
     };
     getUsers();
   }, []);
 
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin" /></div>;
+
+  if (error) return (
+    <div className="bg-card p-10 rounded-2xl border border-red-400/20 flex flex-col items-center space-y-4 text-center">
+      <AlertTriangle size={32} className="text-red-400" />
+      <div>
+        <h3 className="text-lg font-bold text-red-400 mb-1">Error</h3>
+        <p className="text-white/40 text-sm">{error}</p>
+      </div>
+      <button onClick={() => { localStorage.removeItem('userInfo'); navigate('/admin/login'); }} className="px-6 py-2.5 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400 text-sm font-bold hover:bg-red-400/20 transition-all">Re-Login</button>
+    </div>
+  );
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold">User Management</h1>
-        <p className="text-text/60 mt-1">Manage all registered users and their account details.</p>
+        <h1 className="text-3xl font-black text-white">User Management</h1>
+        <p className="text-white/40 text-sm mt-1">All registered users on the platform.</p>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
-        </div>
-      ) : error ? (
-        <div className="glass p-10 rounded-3xl border border-red-400/20 flex flex-col items-center space-y-6 text-center">
-          <AlertTriangle size={48} className="text-red-400" />
-          <div>
-            <h3 className="text-xl font-bold text-red-400 mb-2">Authentication Error</h3>
-            <p className="text-text/60">{error}</p>
-          </div>
-          <button
-            onClick={() => {
-              localStorage.removeItem('userInfo');
-              navigate('/admin/login');
-            }}
-            className="bg-red-400/10 border border-red-400/30 text-red-400 px-8 py-3 rounded-xl font-bold hover:bg-red-400/20 transition-all"
-          >
-            Log Out & Re-Login
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {users.map((user) => (
-            <div key={user._id} className="glass p-8 rounded-3xl border border-primary/10 relative group hover:border-primary/40 transition-all">
-              <div className="flex items-start justify-between mb-6">
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary border border-primary/20">
-                  <User size={32} />
-                </div>
-                {user.role === 'admin' && (
-                  <span className="flex items-center space-x-1 bg-accent/20 text-accent px-3 py-1 rounded-full text-[10px] font-bold uppercase">
-                    <ShieldCheck size={12} />
-                    <span>Admin</span>
-                  </span>
-                )}
-              </div>
-              
-              <h3 className="text-xl font-bold mb-1">{user.name}</h3>
-              <p className="text-text/50 text-sm mb-6 flex items-center">
-                <Mail size={14} className="mr-2" /> {user.email}
-              </p>
-
-              <div className="space-y-3 pt-6 border-t border-primary/10">
-                <div className="flex items-center text-sm text-text/70">
-                  <Phone size={14} className="mr-3 text-primary" />
-                  <span>{user.phone || 'No phone added'}</span>
-                </div>
-                <div className="flex items-center text-sm text-text/70">
-                  <Calendar size={14} className="mr-3 text-primary" />
-                  <span>Joined {new Date(user.createdAt).toLocaleDateString()}</span>
-                </div>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {users.map((u) => (
+          <div key={u._id} className="bg-card p-5 rounded-2xl border border-white/[0.06]">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary"><User size={22} /></div>
+              {u.role === 'admin' && (
+                <span className="flex items-center gap-1 bg-accent/10 text-accent px-2.5 py-1 rounded-full text-[10px] font-bold uppercase">
+                  <ShieldCheck size={10} /> Admin
+                </span>
+              )}
             </div>
-          ))}
-        </div>
-      )}
+            <h4 className="font-bold text-sm text-white mb-0.5">{u.name}</h4>
+            <p className="text-white/30 text-xs flex items-center gap-1.5 mb-4"><Mail size={10} /> {u.email}</p>
+            <div className="pt-3 border-t border-white/[0.04] space-y-2">
+              <div className="flex items-center text-xs text-white/40"><Phone size={12} className="mr-2 text-primary/60" /> {u.phone || 'No phone'}</div>
+              <div className="flex items-center text-xs text-white/40"><Calendar size={12} className="mr-2 text-primary/60" /> {new Date(u.createdAt).toLocaleDateString()}</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
