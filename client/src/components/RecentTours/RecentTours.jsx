@@ -78,6 +78,20 @@ const RecentTours = ({ title = "Our Recent Tours", subtitle = "Take a look at so
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80"></div>
+                    {(tour.videoUrl || tour.audioUrl) && (
+                      <div className="absolute top-4 right-4 flex gap-2">
+                        {tour.videoUrl && (
+                          <span className="bg-blue-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 border border-white/20">
+                            <Video size={10} /> Video
+                          </span>
+                        )}
+                        {tour.audioUrl && (
+                          <span className="bg-[#F97316]/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-1.5 border border-white/20">
+                            <Music size={10} /> Audio
+                          </span>
+                        )}
+                      </div>
+                    )}
                     <div className="absolute bottom-6 left-6">
                       <div className="flex items-center space-x-2 bg-primary/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-primary mb-2 border border-primary/20 w-max">
                         <Clock size={12} />

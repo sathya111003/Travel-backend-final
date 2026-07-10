@@ -52,10 +52,14 @@ export const deleteDestination = (id) => API.delete(`/destinations/${id}`);
 export const subscribeNewsletter = (email) => API.post('/newsletter', { email });
 
 // Upload API
-export const uploadImage = (formData) => API.post('/upload', formData, {
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
+export const uploadImage = (formData) => API.post('/upload/image', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+});
+export const uploadVideo = (formData) => API.post('/upload/video', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+});
+export const uploadAudio = (formData) => API.post('/upload/audio', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
 });
 
 export default API;

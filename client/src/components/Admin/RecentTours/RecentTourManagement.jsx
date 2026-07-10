@@ -1,8 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Trash2, Image as ImageIcon, Clock, Type, FileText, Video, Music } from 'lucide-react';
-import { fetchRecentTours, createRecentTour, deleteRecentTour } from '../../../api/api';
+import { Plus, Trash2, Clock, Type, FileText, Video, Music, Upload, X, Play, Headphones } from 'lucide-react';
+import { fetchRecentTours, createRecentTour, deleteRecentTour, uploadVideo, uploadAudio } from '../../../api/api';
 import ImageUploadWidget from '../ImageUploadWidget';
+
+const MediaUploadWidget = ({ label, value, onChange, accept, icon: Icon, color, uploadFn, placeholder }) => {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
+  const [fileName, setFileName] = useState('');
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const maxSize = accept === 'video/*' ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setError(`File size must be under ${accept === 'video/*' ? '50MB' : '10MB'}`);
+      return;
+    }
+
+    const data = new FormData();
+    data.append(accept === 'video/*' ? 'video' : 'audio', file);
+    setFileName(file.name);
+    setUploading(true);
+    setError('');
+
+    try {
+      const response = await uploadFn(data);
+      onChange(response.data.url);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to upload');
+      setFileName('');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemove = () => {
+    onChange('');
+    setFileName('');
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="text-xs font-bold text-text/50 uppercase ml-1 flex items-center gap-2">
+        <Icon size={14} className={color} /> {label} (Optional)
+      </label>
+      <div className="flex items-center gap-3 bg-primary/5 p-4 rounded-2xl border border-primary/10 hover:border-primary/20 transition-all">
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${value ? `${color}/10` : 'bg-background/50'}`}>
+          {value ? <Play size={20} className={color} /> : <Icon size={20} className="text-primary/20" />}
+        </div>
+        <div className="flex-1 flex items-center gap-2">
+          {value ? (
+            <div className="flex-1 flex items-center gap-2 bg-green-500/10 px-4 py-3 rounded-xl border border-green-500/20">
+              <Play size={14} className="text-green-400" />
+              <span className="text-sm text-green-400 truncate flex-1">{fileName || 'File uploaded'}</span>
+              <button type="button" onClick={handleRemove} className="text-red-400 hover:bg-red-400/10 p-1 rounded-lg transition-all">
+                <X size={14} />
+              </button>
+            </div>
+          ) : (
+            <>
+              <span className="text-sm text-text/40 flex-1 truncate">{placeholder}</span>
+              <label className={`cursor-pointer ${color}/10 hover:${color}/20 text-primary p-3 rounded-xl border border-primary/25 flex items-center justify-center shrink-0 transition-all font-bold text-xs select-none min-w-[100px] h-[46px]`}>
+                {uploading ? (
+                  <span className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+                ) : (
+                  <>
+                    <Upload size={14} className="mr-1.5" />
+                    <span>Upload</span>
+                  </>
+                )}
+                <input type="file" accept={accept} className="hidden" onChange={handleFileChange} disabled={uploading} />
+              </label>
+            </>
+          )}
+        </div>
+      </div>
+      {error && <p className="text-red-400 text-xs ml-1">{error}</p>}
+    </div>
+  );
+};
 
 const RecentTourManagement = () => {
   const [tours, setTours] = useState([]);
@@ -117,30 +195,26 @@ const RecentTourManagement = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-text/50 uppercase ml-1">Video URL (Optional)</label>
-                  <div className="relative">
-                    <Video className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={18} />
-                    <input 
-                      className="w-full glass pl-12 pr-4 py-4 rounded-2xl border-primary/10"
-                      placeholder="https://example.com/video.mp4"
-                      value={formData.videoUrl}
-                      onChange={(e) => setFormData({...formData, videoUrl: e.target.value})}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-text/50 uppercase ml-1">Audio URL (Optional)</label>
-                  <div className="relative">
-                    <Music className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={18} />
-                    <input 
-                      className="w-full glass pl-12 pr-4 py-4 rounded-2xl border-primary/10"
-                      placeholder="https://example.com/audio.mp3"
-                      value={formData.audioUrl}
-                      onChange={(e) => setFormData({...formData, audioUrl: e.target.value})}
-                    />
-                  </div>
-                </div>
+                <MediaUploadWidget
+                  label="Tour Video"
+                  value={formData.videoUrl}
+                  onChange={(val) => setFormData({ ...formData, videoUrl: val })}
+                  accept="video/*"
+                  icon={Video}
+                  color="text-blue-400"
+                  uploadFn={uploadVideo}
+                  placeholder="Upload tour video (MP4, WebM)..."
+                />
+                <MediaUploadWidget
+                  label="Tour Audio"
+                  value={formData.audioUrl}
+                  onChange={(val) => setFormData({ ...formData, audioUrl: val })}
+                  accept="audio/*"
+                  icon={Music}
+                  color="text-[#F97316]"
+                  uploadFn={uploadAudio}
+                  placeholder="Upload tour audio (MP3, WAV)..."
+                />
               </div>
 
               <div className="space-y-2">
@@ -198,6 +272,18 @@ const RecentTourManagement = () => {
                 </div>
                 <p className="text-xs font-bold text-primary uppercase">{tour.days}</p>
                 <p className="text-sm text-text/60 line-clamp-2">{tour.description}</p>
+                <div className="flex items-center gap-2 pt-1">
+                  {tour.videoUrl && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded-full">
+                      <Video size={10} /> Video
+                    </span>
+                  )}
+                  {tour.audioUrl && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-400 bg-orange-400/10 px-2 py-1 rounded-full">
+                      <Music size={10} /> Audio
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           ))}
