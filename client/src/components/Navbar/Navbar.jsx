@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, Menu, X, User, LogOut, LayoutDashboard, ChevronDown, Star, Phone, Mail } from 'lucide-react';
+import { Menu, X, User, LogOut, LayoutDashboard, ChevronDown, Star, Phone, Mail } from 'lucide-react';
 import { fetchDestinations, fetchAllPackagesAdmin } from '../../api/api';
 import logo from '../../assets/logo.PNG';
 import { useAuth } from '../../context/AuthContext';
+
+const navLinks = [
+  { label: 'Home', path: '/' },
+  { label: 'About', path: '/about' },
+  { label: 'Contact', path: '/contact' },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,11 +18,10 @@ const Navbar = () => {
   const [userDropdown, setUserDropdown] = useState(false);
   const [destinations, setDestinations] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [activeMenu, setActiveMenu] = useState(null); // 'domestic', 'international', or 'packages'
+  const [activeMenu, setActiveMenu] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
-  
   const { userInfo, logout, openAuthModal } = useAuth();
 
   useEffect(() => {
@@ -25,8 +30,6 @@ const Navbar = () => {
       try {
         const { data: destData } = await fetchDestinations();
         setDestinations(destData);
-
-        // Fetch unique categories from packages
         const { data: pkgData } = await fetchAllPackagesAdmin();
         const uniqueCategories = [...new Set(pkgData.map(p => (p.category || '').trim().toLowerCase()))].filter(Boolean);
         setCategories(uniqueCategories);
@@ -53,32 +56,28 @@ const Navbar = () => {
 
     return (
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        className={`fixed left-0 right-0 ${scrolled ? 'top-[105px]' : 'top-[132px]'} bg-background/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 mx-auto max-w-5xl rounded-b-[2rem] overflow-hidden`}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        className={`fixed left-0 right-0 top-full bg-background/95 backdrop-blur-2xl border-t border-white/5 shadow-2xl z-40 mx-auto max-w-5xl rounded-b-3xl overflow-hidden`}
         onMouseEnter={() => setActiveMenu(type)}
         onMouseLeave={() => setActiveMenu(null)}
       >
-        <div className="p-12 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="p-10 max-h-[55vh] overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {filtered.map((region) => (
-              <div key={region._id} className="space-y-6">
-                <div className="space-y-1">
-                  <h4 className="text-xl font-bold text-white border-b-2 border-primary/30 pb-2 inline-block">{region.region}</h4>
-                  <div className="flex space-x-1 pt-1 opacity-40">
-                    {[...Array(3)].map((_, i) => <div key={i} className="w-4 h-[1px] bg-white"></div>)}
-                  </div>
-                </div>
-                <ul className="space-y-3">
+              <div key={region._id} className="space-y-5">
+                <h4 className="text-sm font-bold text-primary uppercase tracking-widest border-b border-primary/20 pb-3">{region.region}</h4>
+                <ul className="space-y-2.5">
                   {region.cities.map((city, idx) => (
-                    <li key={idx} className="group">
+                    <li key={idx}>
                       <Link
                         to={`/packages?city=${city.name}`}
-                        className="flex items-center space-x-2 text-white/70 hover:text-primary transition-all text-sm font-medium"
+                        className="flex items-center space-x-2 text-white/60 hover:text-primary transition-colors text-sm"
                         onClick={() => setActiveMenu(null)}
                       >
-                        <Star size={12} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                        <Star size={10} className="opacity-30" />
                         <span>{city.name}</span>
                       </Link>
                     </li>
@@ -94,24 +93,25 @@ const Navbar = () => {
 
   const CategoryMenu = () => (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      className={`fixed left-0 right-0 ${scrolled ? 'top-[105px]' : 'top-[132px]'} bg-background/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 mx-auto max-w-sm rounded-b-[2rem] overflow-hidden`}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      className={`fixed left-0 right-0 top-full bg-background/95 backdrop-blur-2xl border-t border-white/5 shadow-2xl z-40 mx-auto max-w-sm rounded-b-3xl overflow-hidden`}
       onMouseEnter={() => setActiveMenu('packages')}
       onMouseLeave={() => setActiveMenu(null)}
     >
-      <div className="p-8 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
-        <h4 className="text-sm font-bold text-primary uppercase tracking-widest mb-4 sticky top-0 bg-background/95 pb-2">Browse Categories</h4>
-        <ul className="space-y-4">
+      <div className="p-8">
+        <h4 className="text-sm font-bold text-primary uppercase tracking-widest mb-4">Browse Categories</h4>
+        <ul className="space-y-3">
           {categories.map((cat, idx) => (
             <li key={idx}>
               <Link
                 to={`/packages?category=${cat}`}
-                className="text-white/70 hover:text-primary transition-all text-sm font-medium flex items-center space-x-2"
+                className="text-white/60 hover:text-primary transition-colors text-sm flex items-center space-x-2"
                 onClick={() => setActiveMenu(null)}
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/40"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
                 <span className="capitalize">{cat}</span>
               </Link>
             </li>
@@ -123,154 +123,129 @@ const Navbar = () => {
 
   return (
     <div className="fixed w-full z-50 top-0 left-0 flex flex-col">
-      {/* Top Scrolling Marquee Navbar */}
-      <div className="w-full bg-primary text-white py-2 text-[10px] font-black tracking-widest uppercase overflow-hidden border-b border-white/5 select-none z-50">
+      {/* Top Marquee */}
+      <div className="w-full bg-primary text-white py-1.5 text-[10px] font-black tracking-widest uppercase overflow-hidden select-none z-50">
         <div className="w-full flex overflow-hidden">
           <div className="animate-marquee whitespace-nowrap flex space-x-20 pr-20 min-w-full justify-around shrink-0">
-            <span className="flex items-center gap-2">
-              <Phone size={12} className="text-white" /> +91 93615 71902
-            </span>
-            <span className="flex items-center gap-2">
-              <Mail size={12} className="text-white" /> ravanaholidaysofficial@gmail.com
-            </span>
-            <span className="flex items-center gap-2">
-              <Phone size={12} className="text-white" /> +91 93615 71902
-            </span>
-            <span className="flex items-center gap-2">
-              <Mail size={12} className="text-white" /> ravanaholidaysofficial@gmail.com
-            </span>
+            <span className="flex items-center gap-2"><Phone size={10} /> +91 93615 71902</span>
+            <span className="flex items-center gap-2"><Mail size={10} /> ravanaholidaysofficial@gmail.com</span>
+            <span className="flex items-center gap-2"><Phone size={10} /> +91 93615 71902</span>
+            <span className="flex items-center gap-2"><Mail size={10} /> ravanaholidaysofficial@gmail.com</span>
           </div>
           <div className="animate-marquee whitespace-nowrap flex space-x-20 pr-20 min-w-full justify-around shrink-0" aria-hidden="true">
-            <span className="flex items-center gap-2">
-              <Phone size={12} className="text-white" /> +91 93615 71902
-            </span>
-            <span className="flex items-center gap-2">
-              <Mail size={12} className="text-white" /> ravanaholidaysofficial@gmail.com
-            </span>
-            <span className="flex items-center gap-2">
-              <Phone size={12} className="text-white" /> +91 93615 71902
-            </span>
-            <span className="flex items-center gap-2">
-              <Mail size={12} className="text-white" /> ravanaholidaysofficial@gmail.com
-            </span>
+            <span className="flex items-center gap-2"><Phone size={10} /> +91 93615 71902</span>
+            <span className="flex items-center gap-2"><Mail size={10} /> ravanaholidaysofficial@gmail.com</span>
+            <span className="flex items-center gap-2"><Phone size={10} /> +91 93615 71902</span>
+            <span className="flex items-center gap-2"><Mail size={10} /> ravanaholidaysofficial@gmail.com</span>
           </div>
         </div>
       </div>
 
-      <div className={`w-full transition-all duration-500 ${scrolled ? 'py-1 bg-black/95 backdrop-blur-xl shadow-2xl border-b border-white/10' : 'py-2 bg-transparent'}`}>
+      {/* Main Navbar */}
+      <nav className={`w-full transition-all duration-500 ${
+        scrolled
+          ? 'py-0.5 bg-black/90 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.4)] border-b border-white/[0.03]'
+          : 'py-2 bg-transparent'
+      }`}>
         <div className="max-w-[1400px] mx-auto px-4 sm:px-8">
           <div className="flex justify-between items-center">
-          {/* Logo Section */}
-          <Link to="/" className="flex items-center group shrink-0 relative -top-2">
-            <img src={logo} alt="Ravana Holidays" className="h-28 w-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xl" />
-          </Link>
-
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden lg:flex items-center space-x-8 xl:space-x-12">
-            <Link to="/" className={`text-xs font-bold uppercase tracking-[0.2em] hover:text-primary transition-all relative group ${isActive('/') ? 'text-primary' : 'text-white/70'}`}>
-              Home
-              <span className={`absolute -bottom-1 left-0 h-[2px] bg-primary transition-all duration-300 ${isActive('/') ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-            </Link>
-            <Link to="/about" className={`text-xs font-bold uppercase tracking-[0.2em] hover:text-primary transition-all relative group ${isActive('/about') ? 'text-primary' : 'text-white/70'}`}>
-              About Us
-              <span className={`absolute -bottom-1 left-0 h-[2px] bg-primary transition-all duration-300 ${isActive('/about') ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+            {/* Logo */}
+            <Link to="/" className="flex items-center shrink-0 relative -top-1">
+              <img src={logo} alt="Ravana Holidays - Premium Travel Agency" className="h-24 w-auto object-contain drop-shadow-lg" />
             </Link>
 
-            {/* Domestic Packages */}
-            <div
-              className="relative group py-2"
-              onMouseEnter={() => setActiveMenu('domestic')}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.2em] hover:text-primary transition-all ${activeMenu === 'domestic' ? 'text-primary' : 'text-white/70'}`}>
-                <span>Domestic</span>
-                <ChevronDown size={12} className={`transition-transform duration-300 ${activeMenu === 'domestic' ? 'rotate-180' : ''}`} />
-              </button>
+            {/* Desktop Nav */}
+            <div className="hidden lg:flex items-center space-x-1">
+              {navLinks.map(({ label, path }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`px-4 py-2 text-[11px] font-bold uppercase tracking-[0.15em] rounded-lg transition-all relative ${
+                    isActive(path) ? 'text-primary bg-primary/5' : 'text-white/60 hover:text-white hover:bg-white/[0.03]'
+                  }`}
+                >
+                  {label}
+                  {isActive(path) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-primary rounded-full" />}
+                </Link>
+              ))}
+
+              {/* Dropdown menus */}
+              {[
+                { key: 'domestic', label: 'Domestic' },
+                { key: 'international', label: 'International' },
+                { key: 'packages', label: 'Packages' },
+              ].map(({ key, label }) => (
+                <div
+                  key={key}
+                  className="relative"
+                  onMouseEnter={() => setActiveMenu(key)}
+                  onMouseLeave={() => setActiveMenu(null)}
+                >
+                  <button className={`flex items-center space-x-1 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.15em] rounded-lg transition-all ${
+                    activeMenu === key ? 'text-primary bg-primary/5' : 'text-white/60 hover:text-white hover:bg-white/[0.03]'
+                  }`}>
+                    <span>{label}</span>
+                    <ChevronDown size={10} className={`transition-transform duration-200 ${activeMenu === key ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
+              ))}
             </div>
 
-            {/* International Packages */}
-            <div
-              className="relative group py-2"
-              onMouseEnter={() => setActiveMenu('international')}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.2em] hover:text-primary transition-all ${activeMenu === 'international' ? 'text-primary' : 'text-white/70'}`}>
-                <span>International</span>
-                <ChevronDown size={12} className={`transition-transform duration-300 ${activeMenu === 'international' ? 'rotate-180' : ''}`} />
-              </button>
-            </div>
-
-            {/* All Packages Categories Hover */}
-            <div
-              className="relative group py-2"
-              onMouseEnter={() => setActiveMenu('packages')}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button className={`flex items-center space-x-1 text-xs font-bold uppercase tracking-[0.2em] hover:text-primary transition-all ${activeMenu === 'packages' ? 'text-primary' : 'text-white/70'}`}>
-                <span>Packages</span>
-                <ChevronDown size={12} className={`transition-transform duration-300 ${activeMenu === 'packages' ? 'rotate-180' : ''}`} />
-              </button>
-            </div>
-
-            <Link to="/contact" className={`text-xs font-bold uppercase tracking-[0.2em] hover:text-primary transition-all relative group ${isActive('/contact') ? 'text-primary' : 'text-white/70'}`}>
-              Contact Us
-              <span className={`absolute -bottom-1 left-0 h-[2px] bg-primary transition-all duration-300 ${isActive('/contact') ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-            </Link>
-          </div>
-
-          {/* Action Section */}
-          <div className="flex items-center space-x-6">
-            <a
-              href="https://wa.me/919361571902?text=Hi%20Ravana%20Holidays!%20I'm%20interested%20in%20booking%20a%20trip.%20Could%20you%20please%20share%20more%20details%3F"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center space-x-2 bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-green-500/20 hover:scale-105"
-            >
-              <Phone size={14} />
-              <span>Enquire Now</span>
-            </a>
-
-            {userInfo ? (
-              <div className="relative">
-                <button onClick={() => setUserDropdown(!userDropdown)} className="flex items-center space-x-3 bg-white/5 px-5 py-2.5 rounded-2xl border border-white/10 hover:border-primary transition-all">
-                  <User className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] font-bold text-white uppercase tracking-widest">{userInfo.name.split(' ')[0]}</span>
-                </button>
-                <AnimatePresence>
-                  {userDropdown && (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute right-0 mt-4 w-56 bg-background/95 backdrop-blur-xl border border-white/10 rounded-[1.5rem] overflow-hidden shadow-2xl py-3 z-50">
-                      <Link to="/dashboard" onClick={() => setUserDropdown(false)} className="flex items-center space-x-3 px-6 py-3 hover:bg-primary/10 text-white text-xs font-bold uppercase tracking-widest">
-                        <User size={14} className="text-primary" /> <span>My Account</span>
-                      </Link>
-                      {userInfo.role === 'admin' && (
-                        <Link to="/admin/dashboard" onClick={() => setUserDropdown(false)} className="flex items-center space-x-3 px-6 py-3 hover:bg-primary/10 text-white text-xs font-bold uppercase tracking-widest">
-                          <LayoutDashboard size={14} className="text-primary" /> <span>Admin Panel</span>
-                        </Link>
-                      )}
-                      <button onClick={handleLogout} className="w-full flex items-center space-x-3 px-6 py-3 hover:bg-red-400/10 text-red-400 text-xs font-bold uppercase tracking-widest border-t border-white/5 mt-2">
-                        <LogOut size={14} /> <span>Sign Out</span>
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <button 
-                onClick={() => openAuthModal('login')} 
-                className="hidden md:flex items-center space-x-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-black/20 hover:scale-105 active:scale-95"
+            {/* Actions */}
+            <div className="flex items-center space-x-3">
+              <a
+                href="https://wa.me/919361571902?text=Hi%20Ravana%20Holidays!%20I'm%20interested%20in%20booking%20a%20trip.%20Could%20you%20please%20share%20more%20details%3F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:flex items-center space-x-2 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-[#25D366]/20 hover:border-[#25D366]/40"
               >
-                <User size={14} />
-                <span>Login</span>
-              </button>
-            )}
+                <Phone size={12} />
+                <span>Enquire</span>
+              </a>
 
-            {/* Mobile Menu Button */}
-            <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white hover:text-primary transition-colors">
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+              {userInfo ? (
+                <div className="relative">
+                  <button onClick={() => setUserDropdown(!userDropdown)} className="flex items-center space-x-2 bg-white/[0.04] px-4 py-2.5 rounded-xl border border-white/[0.06] hover:border-primary/30 transition-all">
+                    <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
+                      <User className="w-3 h-3 text-primary" />
+                    </div>
+                    <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest hidden sm:block">{userInfo.name.split(' ')[0]}</span>
+                  </button>
+                  <AnimatePresence>
+                    {userDropdown && (
+                      <motion.div initial={{ opacity: 0, y: 8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.96 }} transition={{ duration: 0.15 }} className="absolute right-0 mt-3 w-52 bg-background/95 backdrop-blur-2xl border border-white/[0.06] rounded-2xl overflow-hidden shadow-2xl py-2 z-50">
+                        <Link to="/dashboard" onClick={() => setUserDropdown(false)} className="flex items-center space-x-3 px-5 py-2.5 hover:bg-white/[0.04] text-white/70 text-xs font-medium transition-colors">
+                          <User size={14} className="text-primary/60" /> <span>My Account</span>
+                        </Link>
+                        {userInfo.role === 'admin' && (
+                          <Link to="/admin/dashboard" onClick={() => setUserDropdown(false)} className="flex items-center space-x-3 px-5 py-2.5 hover:bg-white/[0.04] text-white/70 text-xs font-medium transition-colors">
+                            <LayoutDashboard size={14} className="text-primary/60" /> <span>Admin Panel</span>
+                          </Link>
+                        )}
+                        <button onClick={handleLogout} className="w-full flex items-center space-x-3 px-5 py-2.5 hover:bg-red-400/5 text-red-400/80 text-xs font-medium border-t border-white/[0.04] mt-1 transition-colors">
+                          <LogOut size={14} /> <span>Sign Out</span>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <button
+                  onClick={() => openAuthModal('login')}
+                  className="hidden md:flex items-center space-x-2 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-white/80 px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all"
+                >
+                  <User size={12} />
+                  <span>Login</span>
+                </button>
+              )}
+
+              <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white/80 hover:text-primary transition-colors p-1">
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* Mega Menus */}
       <AnimatePresence>
@@ -279,26 +254,41 @@ const Navbar = () => {
         {activeMenu === 'packages' && <CategoryMenu />}
       </AnimatePresence>
 
-      {/* Mobile Nav Overlay */}
+      {/* Mobile Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }} className="fixed inset-0 bg-background z-[100] flex flex-col p-10">
-            <div className="flex justify-between items-center mb-16">
-              <div className="flex flex-col">
-                <span className="text-3xl font-black text-white leading-none">MENU</span>
-                <div className="w-12 h-1 bg-primary mt-2"></div>
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 bg-background z-[100] flex flex-col p-8"
+          >
+            <div className="flex justify-between items-center mb-12">
+              <div>
+                <span className="text-2xl font-black text-white tracking-tight">MENU</span>
+                <div className="w-8 h-0.5 bg-primary mt-1.5 rounded-full" />
               </div>
-              <button onClick={() => setIsOpen(false)} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-white"><X size={24} /></button>
+              <button onClick={() => setIsOpen(false)} className="w-10 h-10 bg-white/[0.04] rounded-full flex items-center justify-center text-white/60">
+                <X size={20} />
+              </button>
             </div>
-            <div className="space-y-6">
-              {['Home', 'About', 'Packages', 'Contact'].map((item, i) => (
+            <div className="space-y-1">
+              {[
+                { label: 'HOME', path: '/' },
+                { label: 'ABOUT', path: '/about' },
+                { label: 'PACKAGES', path: '/packages' },
+                { label: 'CONTACT', path: '/contact' },
+              ].map(({ label, path }) => (
                 <Link
-                  key={i}
-                  to={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
+                  key={path}
+                  to={path}
                   onClick={() => setIsOpen(false)}
-                  className="block text-4xl font-black text-white hover:text-primary transition-colors tracking-tighter"
+                  className={`block py-3 text-3xl font-black tracking-tight transition-colors ${
+                    isActive(path) ? 'text-primary' : 'text-white/80 hover:text-primary'
+                  }`}
                 >
-                  {item.toUpperCase()}
+                  {label}
                 </Link>
               ))}
               <a
@@ -306,22 +296,26 @@ const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="block text-4xl font-black text-[#25D366] hover:text-[#128C7E] transition-colors tracking-tighter"
+                className="block py-3 text-3xl font-black text-[#25D366] hover:text-[#128C7E] transition-colors tracking-tight"
               >
-                WHATSAPP ENQUIRE
+                WHATSAPP
               </a>
-              <div className="pt-10 space-y-4">
-                {userInfo ? (
-                  <button onClick={handleLogout} className="text-red-400 font-bold uppercase tracking-widest text-lg">Sign Out</button>
-                ) : (
-                  <button onClick={() => { setIsOpen(false); openAuthModal('login'); }} className="block w-full bg-primary text-background text-center py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-primary/20">LOGIN / REGISTER</button>
-                )}
-              </div>
+            </div>
+            <div className="mt-auto pt-10">
+              {userInfo ? (
+                <div className="space-y-3">
+                  <Link to="/dashboard" onClick={() => setIsOpen(false)} className="block w-full text-center py-4 bg-white/[0.04] rounded-xl font-bold text-white/80 text-sm border border-white/[0.06]">My Account</Link>
+                  <button onClick={() => { handleLogout(); setIsOpen(false); }} className="block w-full text-center py-4 text-red-400/80 font-bold text-sm">Sign Out</button>
+                </div>
+              ) : (
+                <button onClick={() => { setIsOpen(false); openAuthModal('login'); }} className="w-full bg-primary text-background py-4 rounded-xl font-black uppercase tracking-widest text-sm shadow-lg shadow-primary/20">
+                  Login / Register
+                </button>
+              )}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
     </div>
   );
 };

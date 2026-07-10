@@ -10,71 +10,117 @@
   --color-border: #334155;
 }
 
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 140px;
+}
+
 :root {
   background-color: #0B1120;
   color: #F8FAFC;
-  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Glassmorphism utility */
+::selection {
+  background: rgba(239, 68, 68, 0.3);
+  color: #F8FAFC;
+}
+
+/* Glassmorphism */
 .glass {
-  background: rgba(19, 28, 49, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid #334155;
+  background: rgba(19, 28, 49, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .glass-nav {
-  background: rgba(11, 17, 32, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(11, 17, 32, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.glass-card {
+  background: rgba(19, 28, 49, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.06);
+  transform: translateY(-2px);
 }
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0B1120; }
+::-webkit-scrollbar-thumb { background: #EF4444; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #F97316; }
 
-::-webkit-scrollbar-track {
-  background: #0B1120;
-}
+/* Slick Carousel */
+.slick-dots li button:before { color: #EF4444 !important; }
+.slick-prev:before, .slick-next:before { color: #EF4444 !important; }
 
-::-webkit-scrollbar-thumb {
-  background: #EF4444;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #F97316;
-}
-
-/* Slick Carousel Styles */
-.slick-dots li button:before {
-  color: #EF4444 !important;
-}
-
-.slick-prev:before,
-.slick-next:before {
-  color: #EF4444 !important;
-}
-
-/* Top scrolling marquee */
+/* Marquee */
 @keyframes marquee {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
 }
-
 .animate-marquee {
   display: inline-flex;
   animation: marquee 25s linear infinite;
 }
+.animate-marquee:hover { animation-play-state: paused; }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #EF4444, #F97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle glow */
+.glow-primary {
+  box-shadow: 0 0 40px rgba(239, 68, 68, 0.15), 0 0 80px rgba(239, 68, 68, 0.05);
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Pulse ring for WhatsApp */
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.animate-pulse-ring {
+  animation: pulseRing 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+/* Toast notification */
+.toast-success {
+  animation: fadeInUp 0.4s ease-out, fadeInUp 0.4s ease-in 3s forwards reverse;
 }

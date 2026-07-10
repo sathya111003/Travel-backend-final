@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Slider from 'react-slick';
 import { fetchAllReviews } from '../../api/api';
-import { Quote, Star } from 'lucide-react';
+import { Quote, Star, Sparkles } from 'lucide-react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Handle potential ESM default import issues
 const SlickSlider = Slider.default || Slider;
 
 const Testimonials = () => {
@@ -20,7 +20,8 @@ const Testimonials = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 4000,
-    pauseOnHover: true
+    pauseOnHover: true,
+    arrows: false,
   };
 
   useEffect(() => {
@@ -37,42 +38,48 @@ const Testimonials = () => {
     getReviews();
   }, []);
 
-  if (loading) return null;
-  if (reviews.length === 0) return null;
+  if (loading || reviews.length === 0) return null;
 
   return (
     <section className="py-24 bg-background overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 text-center">
-        <motion.h2 
+        <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-lg px-4 py-1.5 mb-5">
+          <Sparkles size={12} className="text-primary" />
+          <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Testimonials</span>
+        </div>
+
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold mb-16"
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-black text-white mb-14 tracking-tight"
         >
-          What Our <span className="text-primary">Travelers Say</span>
+          What Our <span className="gradient-text">Travelers Say</span>
         </motion.h2>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          className="glass p-10 md:p-16 rounded-[3rem] relative border border-primary/10 shadow-2xl"
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="glass-card p-10 md:p-14 rounded-3xl relative"
         >
-          <Quote className="w-16 h-16 text-primary/10 absolute top-8 left-8" />
+          <Quote className="w-14 h-14 text-primary/10 absolute top-6 left-6" />
           <SlickSlider {...settings}>
             {reviews.map((rev, i) => (
-              <div key={i} className="space-y-8 outline-none">
+              <div key={i} className="space-y-6 outline-none px-4">
                 <div className="flex justify-center space-x-1 text-primary">
                   {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} size={18} className={idx < rev.rating ? 'fill-primary' : 'text-text/20'} />
+                    <Star key={idx} size={16} className={idx < rev.rating ? 'fill-primary' : 'text-white/10'} />
                   ))}
                 </div>
-                
-                <p className="text-xl md:text-2xl text-text/80 italic font-medium leading-relaxed px-4">
+
+                <p className="text-lg md:text-xl text-white/70 italic leading-relaxed">
                   "{rev.comment}"
                 </p>
-                
-                <div className="pt-4">
-                  <h4 className="text-lg font-bold text-primary tracking-wide uppercase">{rev.name}</h4>
-                  <p className="text-xs text-text/40 mt-1">Verified Traveler</p>
+
+                <div className="pt-2">
+                  <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{rev.name}</h4>
+                  <p className="text-[10px] text-white/30 mt-0.5">Verified Traveler</p>
                 </div>
               </div>
             ))}
@@ -82,9 +89,5 @@ const Testimonials = () => {
     </section>
   );
 };
-
-// Note: I'm adding motion imports if needed, but assuming it's available globally or imported correctly.
-// Let's ensure motion is imported.
-import { motion } from 'framer-motion';
 
 export default Testimonials;
