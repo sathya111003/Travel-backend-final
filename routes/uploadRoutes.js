@@ -31,7 +31,7 @@ function checkImageType(file, cb) {
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
 
-    if (extname || mimetype) {
+    if (extname && mimetype) {
         return cb(null, true);
     } else {
         cb(new Error('Only image files (jpg, jpeg, png, webp, gif) are allowed!'));
@@ -44,7 +44,7 @@ function checkVideoType(file, cb) {
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = file.mimetype.startsWith('video/');
 
-    if (extname || mimetype) {
+    if (extname && mimetype) {
         return cb(null, true);
     } else {
         cb(new Error('Only video files (mp4, webm, ogg, mov) are allowed!'));
@@ -57,7 +57,7 @@ function checkAudioType(file, cb) {
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = file.mimetype.startsWith('audio/');
 
-    if (extname || mimetype) {
+    if (extname && mimetype) {
         return cb(null, true);
     } else {
         cb(new Error('Only audio files (mp3, wav, ogg, m4a, aac) are allowed!'));
