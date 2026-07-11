@@ -17,8 +17,8 @@ const getRecentTours = async (req, res) => {
 // @access  Private/Admin
 const addRecentTour = async (req, res) => {
     try {
-        const { title, image, images, days, description, videoUrl, videoUrls, audioUrl, packageId } = req.body;
-        const tourData = { title, image, images, days, description, videoUrl, videoUrls, audioUrl };
+        const { title, image, images, days, description, videoUrl, videoUrls, audioUrl, audioUrls, packageId } = req.body;
+        const tourData = { title, image, images, days, description, videoUrl, videoUrls, audioUrl, audioUrls };
         if (packageId && packageId.trim() !== '') {
             tourData.packageId = packageId;
         }
@@ -68,7 +68,7 @@ const getRecentTourById = async (req, res) => {
 // @access  Private/Admin
 const updateRecentTour = async (req, res) => {
     try {
-        const { title, image, images, days, description, videoUrl, videoUrls, audioUrl, packageId } = req.body;
+        const { title, image, images, days, description, videoUrl, videoUrls, audioUrl, audioUrls, packageId } = req.body;
         const tour = await RecentTour.findById(req.params.id);
         if (tour) {
             tour.title = title || tour.title;
@@ -79,6 +79,7 @@ const updateRecentTour = async (req, res) => {
             tour.videoUrl = videoUrl !== undefined ? videoUrl : tour.videoUrl;
             tour.videoUrls = videoUrls !== undefined ? videoUrls : tour.videoUrls;
             tour.audioUrl = audioUrl !== undefined ? audioUrl : tour.audioUrl;
+            tour.audioUrls = audioUrls !== undefined ? audioUrls : tour.audioUrls;
             tour.packageId = (packageId !== undefined && packageId !== '') ? packageId : null;
 
             const updatedTour = await tour.save();

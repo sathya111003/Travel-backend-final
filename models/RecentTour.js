@@ -38,6 +38,10 @@ const recentTourSchema = mongoose.Schema(
         audioUrl: {
             type: String,
             required: false,
+        },
+        audioUrls: {
+            type: [String],
+            default: [],
         }
     },
     {
